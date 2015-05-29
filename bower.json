@@ -1,0 +1,9 @@
+{
+  "name": "bbui-angular",
+  "version": "1.0.0",
+  "homepage": "https://github.com/blackbaud/bbui-angular",
+  "authors": [
+    "Paul Crowder <paul.crowder@blackbaud.com>"
+  ],
+  "description": "A portion of the Infinity BBUI API ported to Angular services."
+}
