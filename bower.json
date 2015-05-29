@@ -5,5 +5,10 @@
   "authors": [
     "Paul Crowder <paul.crowder@blackbaud.com>"
   ],
-  "description": "A portion of the Infinity BBUI API ported to Angular services."
+  "description": "A portion of the Infinity BBUI API ported to Angular services.",
+  "ignore": [
+    ".*",
+    "gruntfile.js",
+    "src/"
+  ]
 }
