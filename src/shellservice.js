@@ -1835,6 +1835,8 @@
         .factory('bbuiShellService', ['$http', 'bbuiShellServiceConfig', function ($http, bbuiShellServiceConfig) {
             return {
                 create: function (baseUrl, databaseName, options) {
+                    var svc;
+                    
                     baseUrl = baseUrl || bbuiShellServiceConfig.baseUrl;
                     databaseName = databaseName || bbuiShellServiceConfig.databaseName;
                     
@@ -1842,7 +1844,10 @@
                         throw new Error('You must either provide a baseUrl and databaseName as parameters or set them globally using bbuiShellServiceConfig.');
                     }
                     
-                    return new Service(baseUrl, databaseName, options);
+                    svc = new Service(baseUrl, databaseName, options);
+                    svc.$http = $http;
+                    
+                    return svc;
                 }
             };
         }]);
