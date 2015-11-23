@@ -1826,7 +1826,6 @@
 
     }());
 
-    
     angular.module('bbui.shellservice', [])
         .constant('bbuiShellServiceConfig', {
             baseUrl: null,
