@@ -423,7 +423,7 @@
                      * An object that my contain any of the following properties:
                      *
                      * @param {Boolean} options.firstTab
-                     * Indicates that the first visible tab's full metadata should be returned.  Only the caption for other tabs will be returned.</li>
+                     * Indicates that the first visible tab's full metadata should be returned.  Only the caption for other tabs will be returned.
                      *
                      * @param {Object} options.scope
                      * See class description for more information.
@@ -486,10 +486,12 @@
                      *
                      * @param {String} tabId The ID of the tab.
                      * @param {String} recordId The ID of the record to be shown by the page.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -504,11 +506,14 @@
                     /**
                      * @private
                      * Builds a page on the server according to the specified report and returns that page's metadata.
+                     *
                      * @param {String} reportId The ID of the report.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -540,12 +545,18 @@
                     /**
                      * @private
                      * Gets the action metadata for a functional area's task.
-                     * @taskId {String} The ID of the functional area's task.
-                     * @functionalAreaId {String} The ID of the functional area.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {String} functionalAreaId
+                     * The ID of the functional area.
+                     *
+                     * @param {String} taskId
+                     * The ID of the functional area's task.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -566,14 +577,20 @@
                     },
 
                     /**
-                    * @private
-                    * Returns a task as the variable reply for the callback
-                    * @taskId {String} The ID of the task
-                    * @param {Function} successCallback (optional) See class description for more information.
-                    * @param {Function} failureCallback (optional) See class description for more information.
+                     * @private
+                     * Returns a task as the variable reply for the callback
+                     *
+                     * @taskId {String}
+                     * The ID of the task.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
-                    */
+                     */
                     getTaskAction: function (taskId, options) {
                         var url;
 
@@ -589,16 +606,22 @@
                     /**
                      * @private
                      * Gets the metadata for a page-level action.
-                     * @pageId {String} The ID of the page.
-                     * @actionId {String} The ID of the page's action.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
+                     *
+                     * @param {String} pageId
+                     * The ID of the page.
+                     *
+                     * @param {String} actionId
+                     * The ID of the page's action.
+                     *
+                     * @param {String} contextRecordId
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
-                     * </ul>
                      */
                     getPageAction: function (pageId, actionId, contextRecordId, options) {
                         var url;
@@ -611,16 +634,24 @@
                     /**
                      * @private
                      * Gets the metadata for a page section.
-                     * @pageId {String} The ID of the page.
-                     * @tabId {String} The ID of the tab to which the section belongs.
-                     * @sectionId {String} The ID of the section.
-                     * @contextRecordId {String} (optional) The ID of the page's context record.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {String} pageId
+                     * The ID of the page.
+                     *
+                     * @param {String} tabId
+                     * The ID of the tab to which the section belongs.
+                     *
+                     * @param {String} sectionId
+                     * The ID of the section.
+                     *
+                     * @param {String} [contextRecordId]
+                     * The ID of the page's context record.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -662,7 +693,6 @@
 
                         return doPost(this, url, reportValues, options);
                     },
-
 
                     /**
                      * @return {promise}
@@ -910,19 +940,39 @@
 
                     /**
                      * Loads the results of the specified data list and passes the {@link BBUI.webshell.servicecontracts.DataListLoadReply reply object}
-                     * to the successCallback function.
-                     * @param {String} dataListId The ID of the data list to load.
-                     * @param {String} contextRecordId (optional) The ID of the data list's context record.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>pageRecordId</tt> : The ID of the page's context record where the data list is rendered.</li>
-                     * <li><tt>parameterFormSessionId</tt> : The ID of the form session that provides parameters to the data list.</li>
-                     * <li><tt>parameters</tt> : An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the data list results.</li>
-                     * <li><tt>returnFlotData</tt> : A flag indicating the data should be returned in a format readable by flot charts.</li>
-                     * <li><tt>returnFormattedValues</tt> : Flag indicating the data list should return formatted values along with the raw values.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * <li><tt>userSettingsPath</tt> : The path used as the key to store user information about the data list, such as column sizes or the last filter values used.</li>
-                     * </ul>
+                     * to the promise.
+                     *
+                     * @param {String} dataListId
+                     * The ID of the data list to load.
+                     *
+                     * @param {String} [contextRecordId]
+                     * The ID of the data list's context record.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {String} options.pageRecordId
+                     * The ID of the page's context record where the data list is rendered.
+                     *
+                     * @param {String} options.parameterFormSessionId
+                     * The ID of the form session that provides parameters to the data list.
+                     *
+                     * @param {Object[]} options.parameters
+                     * An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the data list results.
+                     * @param {String} options.parameters.name
+                     * @param {Object} options.parameters.value
+                     *
+                     * @param {Boolean} options.returnFlotData
+                     * A flag indicating the data should be returned in a format readable by flot charts.
+                     *
+                     * @param {Boolean} options.returnFormattedValues
+                     * Flag indicating the data list should return formatted values along with the raw values.
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @param {String} options.userSettingsPath
+                     * The path used as the key to store user information about the data list, such as column sizes or the last filter values used.
                      *
                      * @return {promise}
                      */
@@ -964,13 +1014,21 @@
 
                     /**
                      * Loads the results of the specified simple data list and passes the {@link BBUI.webshell.servicecontracts.SimpleDataListLoadReply reply object}
-                     * to the successCallback function.
-                     * @param {String} simpleDataListId The ID of the simple data list to load.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>parameters</tt> : An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the simple data list results.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     * to the promise.
+                     *
+                     * @param {String} simpleDataListId
+                     * The ID of the simple data list to load.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object[]} options.parameters
+                     * An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the simple data list results.
+                     * @param {String} options.parameters.name
+                     * @param {Object} options.parameters.value
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -1111,15 +1169,19 @@
 
                     /**
                      * Gets the prompt to be displayed before the specified record operation is performed and passes the
-                     * {@link BBUI.webshell.servicecontracts.RecordOperationPrompt reply object} to the successCallback function.
-                     * @param {String} recordOperationId The ID of the record operation.
-                     * @param {String} recordId (optional) The ID of the context record for the record operation.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     * {@link BBUI.webshell.servicecontracts.RecordOperationPrompt reply object} to the promise.
+                     *
+                     * @param {String} recordOperationId
+                     * The ID of the record operation.
+                     *
+                     * @param {String} [recordId]
+                     * The ID of the context record for the record operation.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -1139,15 +1201,23 @@
 
                     /**
                      * Performs a record operation.
-                     * @param {String} recordOperationId The ID of the record operation.
-                     * @param {String} recordId (optional) The ID of the context record for the record operation.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>parameters</tt> : An array of objects containing <tt>name</tt> and <tt>value</tt> properties to pass as parameters to the record operation.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {String} recordOperationId
+                     * The ID of the record operation.
+                     *
+                     * @param {String} [recordId]
+                     * The ID of the context record for the record operation.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object[]} options.parameters
+                     * An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to to pass as parameters to the record operation.
+                     * @param {String} options.parameters.name
+                     * @param {Object} options.parameters.value
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -1497,7 +1567,6 @@
 
                         return doPost(this, url, request, options);
                     },
-
 
                     /**
                      * @return {promise}
@@ -1913,15 +1982,22 @@
                     },
 
                     /**
-                     * Loads a data form from the server and passes the {@link BBUI.webshell.servicecontracts.DataFormLoadReply reply object} to the successCallback function.
-                     * @param {String} dataFormInstanceId The ID of the data form instance to load.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>recordId</tt> : The ID of the record for the data form.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     * Loads a data form from the server and passes the {@link BBUI.webshell.servicecontracts.DataFormLoadReply reply object} to the promise.
+                     *
+                     * @param {String} dataFormInstanceId
+                     * The ID of the data form instance to load.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {String} [options.recordId]
+                     * The ID of the record for the data form.
+                     *
+                     * @param {String} [options.contextRecordId]
+                     * The ID of the record that provides context for the data form.
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -1949,16 +2025,21 @@
                     },
 
                     /**
-                     * Saves a data form on the server and passes the {@link BBUI.webshell.servicecontracts.DataFormSaveReply reply object} to the successCallback function.
+                     * Saves a data form on the server and passes the {@link BBUI.webshell.servicecontracts.DataFormSaveReply reply object} to the promise.
+                     *
                      * @param {String} dataFormInstanceId The ID of the data form instance to load.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>contextRecordId</tt> : The ID of the record that provides context for the data form.</li>
-                     * <li><tt>recordId</tt> : The ID of the record for the data form.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {String} [options.recordId]
+                     * The ID of the record for the data form.
+                     *
+                     * @param {String} [options.contextRecordId]
+                     * The ID of the record that provides context for the data form.
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
                      *
                      * @return {promise}
                      */
@@ -2127,18 +2208,21 @@
                     },
 
                     /**
+                     * @return {String}
                      */
                     buildSvcBaseUrl: function (action) {
                         return buildSvcBaseUrl(this, action);
                     },
 
                     /**
+                     * @return {promise}
                      */
                     doGet: function (url, options) {
                         return doRequest(this, "GET", url, null, options);
                     },
 
                     /**
+                     * @return {promise}
                      */
                     doPost: function (url, data, options) {
                         return doRequest(this, "POST", url, data, options);
