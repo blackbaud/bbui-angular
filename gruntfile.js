@@ -48,14 +48,27 @@ module.exports = function (grunt) {
                 files: ['src/*.js'],
                 tasks: ['concat_sourcemap:dist']
             }
+        },
+        jsduck: {
+            main: {
+                src: [
+                    "src"
+                ],
+                dest: "docs",
+                options: {
+
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
-    
+    grunt.loadNpmTasks('grunt-jsduck');
+
     grunt.registerTask('default', ['concat_sourcemap']);
     grunt.registerTask('build', ['default']);
-    
+    grunt.registerTask('docs', ['jsduck']);
+
 };

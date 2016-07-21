@@ -228,7 +228,7 @@
                         part;
 
                     // Split the object name on the period, then loop through the parts, building up a reference to the
-                    // object.  This essentially turns a string like "BBUI.globals.myFunctionName" into the object 
+                    // object.  This essentially turns a string like "BBUI.globals.myFunctionName" into the object
                     // window["BBUI"]["globals"]["myFunctionName"].
                     parts = objName.split(".");
 
@@ -279,7 +279,7 @@
                  */
                 urlConcat: function (arg1) {
                     /// <summary>
-                    /// Concatenates all the provided arguments as if they were portions of a URL, inserting forward slashes 
+                    /// Concatenates all the provided arguments as if they were portions of a URL, inserting forward slashes
                     /// where appropriate.
                     /// </summary>
                     /// <returns type="String">The concatenated URL.</returns>
@@ -383,17 +383,17 @@
 
                     // NOTE: The base URL value used to be passed as a relative URL down from the server, but this caused problems
                     // with mixed content warnings in IE8 when a URL on a DOM element (such as an href attribute on a LINK element
-                    // or a background-image CSS rule on a DIV element) was specified and then created and not added to the page or 
+                    // or a background-image CSS rule on a DIV element) was specified and then created and not added to the page or
                     // removed from the page and then garbage collected.  This is due to a bug in IE8 where the protocol of "about:"
                     // is assumed rather than the protocol specified on the current web page.  Changing the base URL to an absolute
                     // URL by removing a known part of the URL here fixes this issue.  More information on the bug in IE that causes
-                    // the mixed content warning can be found here: 
+                    // the mixed content warning can be found here:
                     // http://support.microsoft.com/kb/925014
                     // http://www.pelagodesign.com/blog/2007/10/30/ie7-removechild-and-ssl/
                     // http://blog.httpwatch.com/2009/09/17/even-more-problems-with-the-ie-8-mixed-content-warning/#comment-10632
                     // http://blogs.msdn.com/b/ieinternals/archive/2009/06/22/https-mixed-content-in-ie8.aspx?PageIndex=3#comments
 
-                    // Also, a utility called "Scriptfree" was instrumental in tracking this bug down.  This was mentioned in a 
+                    // Also, a utility called "Scriptfree" was instrumental in tracking this bug down.  This was mentioned in a
                     // comment on the IEInternals blog post above.
                     // http://www.enhanceie.com/dl/scriptfreesetup.exe
 
@@ -462,9 +462,9 @@
                 }
 
             };
-            
+
             return BBUI;
 
         }]);
-        
+
 }());

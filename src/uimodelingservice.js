@@ -4,8 +4,19 @@
     "use strict";
 
     angular.module('bbui.uimodelingservice', [])
+        /**
+         * @class BBUI.uimodelingservice.bbuiUIModelingServiceConfig
+         *
+         * Configuration for {@link BBUI.uimodelingservice.bbuiUIModelingService bbuiUIModelingService}.
+         */
         .constant('bbuiUIModelingServiceConfig', {
+            /**
+             * @cfg {String} baseUrl
+             */
             baseUrl: null,
+            /**
+             * @cfg {String} databaseName
+             */
             databaseName: null
         })
         .factory('bbuiUIModelingService', ['$http', 'bbui', 'bbuiUIModelingServiceConfig', function ($http, BBUI, bbuiUIModelingServiceConfig) {
@@ -113,15 +124,27 @@
             /**
              * @class BBUI.uimodeling.Service
              * Provides various methods for communicating changes to a UI model to the web server.
-             * @uimodel <span style="color: yes;">Yes</span>
-             * @pageaction <span style="color: green;">Yes</span>
+             *
+             * @param {String} baseUrl
+             * The base URL to the web server.
+             *
+             * @param {String} databaseName
+             * The name of the database to which to connect.
+             *
+             * @param {Object} [options]
+             *
+             * @param {Object} options.runAs
+             *
+             * @param {Object} options.onRequestBegin
+             *
+             * @param {Object} options.onRequestEnd
+             *
+             * @param {Object} options.httpHeaders
+             *
+             * @param {Object} options.useEventQueue
+             *
              */
             Service = function (baseUrl, databaseName, options) {
-                /// <summary>Provides interaction to models on the web server.</summary>
-                /// <param name="baseUrl" type="String">The base URL to the web server.</param>
-                /// <param name="databaseName" type="String">The name of the database to which to connect.</param>
-                /// <field name="baseUrl" type="String">The base URL to the web server.</field>
-                /// <field name="databaseName" type="String">The name of the database to which to connect.</field>
 
                 var svc,
                     useEventQueue;
@@ -129,14 +152,16 @@
                 svc = this;
 
                 /**
-                 * Read-only.  The base URL to the web server.
+                 * @readonly
+                 * The base URL to the web server.
                  * @property baseUrl
                  * @type String
                  */
                 svc.baseUrl = baseUrl;
 
                 /**
-                 * Read-only.  The name of the database to which to connect.
+                 * @readonly
+                 * The name of the database to which to connect.
                  * @property databaseName
                  * @type String
                  */
@@ -154,11 +179,17 @@
                     }
                 }
 
+                /**
+                 * @property handlers
+                 * @type Object
+                 */
                 svc.handlers = {};
             };
 
             Service.prototype = {
 
+                /**
+                 */
                 on: function (evt, fn, scope, formSessionId) {
                     var evtHandlers,
                         handlers;
@@ -178,6 +209,8 @@
                     });
                 },
 
+                /**
+                 */
                 un: function (evt, fn, formSessionId) {
                     var evtHandlers,
                         i;
@@ -195,20 +228,36 @@
                     }
                 },
 
+                /**
+                 * Creates an instance of the form on the server.
+                 *
+                 * @param {String} assemblyName
+                 * The assembly name containing the UI model class.
+                 *
+                 * @param {String} className
+                 * The name of the UI model class.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {String} [options.recordId]
+                 * The ID of the record being edited.
+                 *
+                 * @param {String} [options.contextRecordId]
+                 * The ID of the record that provides the context for the record being added or edited.
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createFormSession: function (assemblyName, className, args, options) {
-                    /// <summary>Creates an instance of the form on the server.</summary>
-                    /// <param name="assemblyName" type="String">The assembly name containing the UI model class.</param>
-                    /// <param name="className" type="String">The name of the UI model class.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// recordId: The ID of the record being edited.
-                    /// contextRecordId: The ID of the record that provides the context for the record being added or edited.
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -225,19 +274,33 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the form on the server.
+                 *
+                 * @param {String} mergeTaskId
+                 * The Id of the merge task.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {String} [options.recordId]
+                 * The ID of the record being edited.
+                 *
+                 * @param {String} [options.contextRecordId]
+                 * The ID of the record that provides the context for the record being added or edited.
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createMergeTaskFormSession: function (mergeTaskId, args, options) {
-                    /// <summary>Creates an instance of the form on the server.</summary>
-                    /// <param name="mergeTaskId" type="String">The Id of the merge task.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// recordId: The ID of the record being edited.
-                    /// contextRecordId: The ID of the record that provides the context for the record being added or edited.
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -252,19 +315,33 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the form on the server.
+                 *
+                 * @param {String} dataFormInstanceId
+                 * The ID of the data form instance to interact with.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {String} [options.recordId]
+                 * The ID of the record being edited.
+                 *
+                 * @param {String} [options.contextRecordId]
+                 * The ID of the record that provides the context for the record being added or edited.
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createDataFormSession: function (dataFormInstanceId, args, options) {
-                    /// <summary>Creates an instance of the form on the server.</summary>
-                    /// <param name="dataFormInstanceId" type="String">The ID of the data form instance to interact with.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// recordId: The ID of the record being edited.
-                    /// contextRecordId: The ID of the record that provides the context for the record being added or edited.
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -279,17 +356,27 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the form on the server.
+                 *
+                 * @param {String} searchListId
+                 * The ID of the search list to interact with.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateSearchListFormSessionArgs} [args]
+                 * Arguments to pass to the search list session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createSearchListSession: function (searchListId, args, options) {
-                    /// <summary>Creates an instance of the form on the server.</summary>
-                    /// <param name="searchListId" type="String">The ID of the search list to interact with.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateSearchListFormSessionArgs">Optional arguments to pass to the search list session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -300,17 +387,27 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the data list's filter form on the server.
+                 *
+                 * @param {String} dataFormInstanceId
+                 * The ID of the data list to interact with.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createDataListFilterFormSession: function (dataListId, args, options) {
-                    /// <summary>Creates an instance of the data list's filter form on the server.</summary>
-                    /// <param name="dataFormInstanceId" type="String">The ID of the data list to interact with.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -325,17 +422,27 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the list builder filter form on the server.
+                 *
+                 * @param {String} queryViewId
+                 * The ID of the query view used to render the list.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createListBuilderFilterFormSession: function (queryViewId, args, options) {
-                    /// <summary>Creates an instance of the list builder filter form on the server.</summary>
-                    /// <param name="queryViewId" type="String">The ID of the query view used to render the list.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -350,18 +457,30 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the report's parameter form on the server.
+                 *
+                 * @param {String} reportId
+                 * The ID of the report to interact with.
+                 *
+                 * @param {String} historyId
+                 * The history ID of the report to interact with.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createReportParameterFormSession: function (reportId, historyId, args, options) {
-                    /// <summary>Creates an instance of the report's parameter form on the server.</summary>
-                    /// <param name="reportId" type="String">The ID of the report to interact with.</param>
-                    /// <param name="historyId" type="String">The history ID of the report to interact with.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -382,19 +501,33 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 * Creates an instance of the business process's parameter form on the server.
+                 *
+                 * @param {String} businessProcessId
+                 * The ID of the data form instance to interact with.
+                 *
+                 * @param {BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs} [args]
+                 * Arguments to pass to the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {String} [options.recordId]
+                 * The ID of the record being edited.
+
+                 * @param {String} [options.contextRecordId]
+                 * The ID of the record that provides the context for the record being added or edited.
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 createBusinessProcessFormSession: function (businessProcessId, args, options) {
-                    /// <summary>Creates an instance of the business process's parameter form on the server.</summary>
-                    /// <param name="businessProcessId" type="String">The ID of the data form instance to interact with.</param>
-                    /// <param name="args" type="BBUI.uimodeling.servicecontracts.CreateDataFormSessionArgs">Optional arguments to pass to the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object literal that may contain any of the following properties:
-                    /// recordId: The ID of the record being edited.
-                    /// contextRecordId: The ID of the record that provides the context for the record being added or edited.
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -409,6 +542,8 @@
                     return doPost(this, url, args, options);
                 },
 
+                /**
+                 */
                 buildSearchListResultsUrl: function (formSessionId, modelInstanceId, htmlEncodeValues, returnFormattedValues, taskId, taskHistoryId, cancelId) {
                     var url;
 
@@ -445,6 +580,8 @@
                     return url;
                 },
 
+                /**
+                 */
                 buildStartBusinessProcessUrl: function (businessProcessId, parameterSetId, dataFormItemKey, businessProcessStatusId) {
                     var url;
 
@@ -471,16 +608,31 @@
                     return url;
                 },
 
+                /**
+                 * Gets the output definition of a search.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the search list form model.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the search list form model.
+                 *
+                 * @param {Boolean} returnExistingResults
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @param {String} [options.taskHistoryId]
+                 *
+                 * @return {promise}
+                 */
                 searchListGetOutputDefinition: function (formSessionId, modelInstanceId, returnExistingResults, options) {
-                    /// <summary>Gets the output definition of a search.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the search list form model.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the search list form model.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the search is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the search.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     if (!options) {
                         options = {};
@@ -497,16 +649,37 @@
                     return doGet(this, url, options, formSessionId);
                 },
 
+                /**
+                 * Gets the results of a search.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the search list form model.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the search list form model.
+                 *
+                 * @param {Object} htmlEncodeValues
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @param {Boolean} [options.returnFormattedValues]
+                 *
+                 * @param {String} [options.taskId]
+                 *
+                 * @param {String} [options.taskHistoryId]
+                 *
+                 * @param {String} [options.cancelId]
+                 *
+                 * @return {promise}
+                 */
                 getSearchListResults: function (formSessionId, modelInstanceId, htmlEncodeValues, options) {
-                    /// <summary>Gets the results of a search.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the search list form model.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the search list form model.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the search is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the search.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     if (!options) {
                         options = {};
@@ -525,55 +698,93 @@
                     return doGet(this, url, options, formSessionId);
                 },
 
+                /**
+                 * Invokes the searchItemSelected event with the given search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the search form session.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the search model instance.
+                 *
+                 * @param {Number} selectedIndex
+                 * The zero-based index of the selected search result row.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeSearchItemSelected: function (formSessionId, modelInstanceId, selectedIndex, options) {
-                    /// <summary>Invokes the searchItemSelected event with the given search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the search form session.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the search model instance.</param>
-                    /// <param name="selectedIndex" type="Number" integer="true">The zero-based index of the selected search result row.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the event is invoked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while invoking the event.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "invokeSearchItemSelected", formSessionId, modelInstanceId);
 
                     return doPost(this, url, selectedIndex, options, formSessionId);
                 },
 
+                /**
+                 * Invokes the search list associated with the given search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the search field.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeFieldSearch: function (formSessionId, modelInstanceId, fieldName, options) {
-                    /// <summary>Invokes the search list associated with the given search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fieldName" type="String">The name of the search field.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the search is invoked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while invoking the search.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "invokeFieldSearch", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Invokes quick find on the given search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the search field.
+                 *
+                 * @param {String} criteria
+                 * The quick find criteria.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeFieldQuickFind: function (formSessionId, modelInstanceId, fieldName, criteria, options) {
-                    /// <summary>Invokes quick find on the given search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fieldName" type="String">The name of the search field.</param>
-                    /// <param name="criteria" type="String">The quick find criteria.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when quick find is invoked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while invoking quick find.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -595,18 +806,30 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Invokes the search list associated with the given search field and executes the search.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the search field.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeFieldAutoSearch: function (formSessionId, modelInstanceId, fieldName, options) {
-                    /// <summary>Invokes the search list associated with the given search field and executes the search.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fieldName" type="String">The name of the search field.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when quick find is invoked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while invoking quick find.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -627,17 +850,27 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Invokes quick find on the given search list.
+                 *
+                 * @param {String} searchListId
+                 * The ID of the search list.
+                 *
+                 * @param {String} criteria
+                 * The quick find criteria.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeQuickFind: function (searchListId, criteria, options) {
-                    /// <summary>Invokes quick find on the given search list.</summary>
-                    /// <param name="searchListId" type="String">The ID of the search list.</param>
-                    /// <param name="criteria" type="String">The quick find criteria.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when quick find is invoked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while invoking quick find.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -655,17 +888,27 @@
                     return doPost(this, url, null, options);
                 },
 
+                /**
+                 * Checks the current values of a data form session's fields to see if there are matching records already in the database.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the data.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 checkForDuplicate: function (formSessionId, modelInstanceId, options) {
-                    /// <summary>Checks the current values of a data form session's fields to see if there are matching records already in the database.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the data.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when duplicates are checked successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while checking for duplicates.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -684,20 +927,36 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the search field.
+                 *
+                 * @param {String} searchFormSessionId
+                 * The ID of the search form session that was invoked.
+                 *
+                 * @param {Number} selectedIndex
+                 * The zero-based index of the selected search result row.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectFieldSearchItem: function (formSessionId, modelInstanceId, fieldName, searchFormSessionId, selectedIndex, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fieldName" type="String">The name of the search field.</param>
-                    /// <param name="searchFormSessionId" type="String">The ID of the search form session that was invoked.</param>
-                    /// <param name="selectedIndex" type="Number" integer="true">The zero-based index of the selected search result row.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectFieldSearchItem", formSessionId, modelInstanceId, fieldName) +
                         "&searchFormSessionId=" +
@@ -706,39 +965,69 @@
                     return doPost(this, url, selectedIndex, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the search field.
+                 *
+                 * @param {String} recordId
+                 * The ID of the selected record.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectFieldSearchItemById: function (formSessionId, modelInstanceId, fieldName, recordId, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fieldName" type="String">The name of the search field.</param>
-                    /// <param name="recordId" type="String">The ID of the selected record.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectFieldSearchItemById", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, recordId, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} actionName
+                 * The name of the search action.
+                 *
+                 * @param {String} searchFormSessionId
+                 * The ID of the search form session that was invoked.
+                 *
+                 * @param {Number} selectedIndex
+                 * The zero-based index of the selected search result row.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectActionSearchItem: function (formSessionId, modelInstanceId, actionName, searchFormSessionId, selectedIndex, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="actionName" type="String">The name of the search action.</param>
-                    /// <param name="searchFormSessionId" type="String">The ID of the search form session that was invoked.</param>
-                    /// <param name="selectedIndex" type="Number" integer="true">The zero-based index of the selected search result row.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectSearchItemAction", formSessionId, modelInstanceId) +
                         "&actionId=" + actionName +
@@ -748,20 +1037,33 @@
                     return doPost(this, url, selectedIndex, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} actionName
+                 * The name of the search action.
+                 *
+                 * @param {String} recordId
+                 * The ID of the selected record.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectActionSearchItemById: function (formSessionId, modelInstanceId, actionName, recordId, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="actionName" type="String">The name of the search action.</param>
-                    /// <param name="searchFormSessionId" type="String">The ID of the search form session that was invoked.</param>
-                    /// <param name="recordId" type="String">The ID of the selected record.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectSearchItemActionById", formSessionId, modelInstanceId) +
                         "&actionId=" + actionName;
@@ -769,75 +1071,132 @@
                     return doPost(this, url, recordId, options, formSessionId);
                 },
 
+                /**
+                 * Updates a field on the form.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {String|Number|Boolean|Object} value
+                 * The field's value.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 updateField: function (formSessionId, modelInstanceId, fieldName, value, options) {
-                    /// <summary>Updates a field on the form.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="value" type="String|Number|Boolean|Object">The field's value.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the field value is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while updating the field value.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "updateField", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, value, options, formSessionId);
                 },
 
+                /**
+                 * Updates multiple fields on the form.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and fields to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the fields to be updated.
+                 *
+                 * @param {Object[]} fieldValues
+                 * @param {String} fieldValues.name
+                 * @param {Object} fieldValues.value
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 updateMultipleFields: function (formSessionId, modelInstanceId, fieldValues, options) {
-                    /// <summary>Updates multiple fields on the form.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and fields to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the fields to be updated.</param>
-                    /// <param name="fieldValues" type="Array">An array of object literals each with a "name" and "value" property.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the field values are updated successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while updating the field values.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "updateMultipleFields", formSessionId, modelInstanceId);
 
                     return doPost(this, url, fieldValues, options, formSessionId);
                 },
 
+                /**
+                 * Updates one or more special properties on a relationship map field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {Object[]} properties
+                 * The properties on the relationship map field to update.
+                 * @param {String} properties.name
+                 * @param {Object} properties.value
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 updateRelationshipMapFieldProperties: function (formSessionId, modelInstanceId, fieldName, properties, options) {
-                    /// <summary>Updates one or more special properties on a relationship map field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="properties" type="Array">An array of objects containing a name and value property representing the properties on the relationship map field to update.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the field is updated successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while updating the field.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "updateRelationshipMapFieldProperties", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, properties, options, formSessionId);
                 },
 
+                /**
+                 * Selects or de-selects the given tree view node.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {String} nodePath
+                 * The fully qualified path of the node to select.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectTreeViewNode: function (formSessionId, modelInstanceId, fieldName, nodePath, options) {
-                    /// <summary>Selects or de-selects the given tree view node.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="nodePath" type="String">The fully qualified path of the node to select.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the node is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the node.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectTreeViewNode", formSessionId, modelInstanceId, fieldName) +
                         "&nodePath=" +
@@ -846,39 +1205,69 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Selects or de-selects the given tree view nodes.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {String} nodePaths
+                 * The fully qualified path of each node to select.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectTreeViewNodes: function (formSessionId, modelInstanceId, fieldName, nodePaths, options) {
-                    /// <summary>Selects or de-selects the given tree view nodes.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="nodePaths" type="String">The fully qualified path of each node to select.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the node is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the node.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectTreeViewNodes", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, nodePaths, options, formSessionId);
                 },
 
+                /**
+                 * Sets the expanded property on a tree view node.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {String} nodePath
+                 * The fully qualified path of the node.
+                 *
+                 * @param {Boolean} expanded
+                 * A flag indicating whether the node is expanded.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 setTreeViewNodeExpanded: function (formSessionId, modelInstanceId, fieldName, nodePath, expanded, options) {
-                    /// <summary>Sets the expanded property on a tree view node.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="nodePath" type="String">The fully qualified path of the node.</param>
-                    /// <param name="expanded" type="Boolean">A flag indicating whether the node is expanded.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the expanded property is set successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while setting the expanded property.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "setTreeViewNodeExpanded", formSessionId, modelInstanceId, fieldName) +
                         "&nodePath=" +
@@ -889,38 +1278,66 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Adds a code table entry and sets the specified field's value to the new code table entry.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the field to be updated.
+                 *
+                 * @param {String|Number|Boolean|Object} codeTableEntryDescription
+                 * The description of the code table entry to add.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 addCodeTableEntry: function (formSessionId, modelInstanceId, fieldName, codeTableEntryDescription, options) {
-                    /// <summary>Adds a code table entry and sets the specified field's value to the new code table entry.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the field to be updated.</param>
-                    /// <param name="codeTableEntryDescription" type="String|Number|Boolean|Object">The description of the code table entry to add.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the code table entry is added successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while adding the code table entry.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "addCodeTableEntry", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, codeTableEntryDescription, options, formSessionId);
                 },
 
+                /**
+                 * Deletes an item from a collection field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the collection field containing the item to be deleted.
+                 *
+                 * @param {String} itemInstanceId
+                 * The ID of the item to be deleted.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 deleteCollectionItem: function (formSessionId, modelInstanceId, fieldName, itemInstanceId, options) {
-                    /// <summary>Deletes an item from a collection field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the collection field containing the item to be deleted.</param>
-                    /// <param name="itemInstanceId" type="String">The ID of the item to be deleted.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the item is deleted successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while deleting the item.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "deleteCollectionItem", formSessionId, modelInstanceId, fieldName) +
                         "&itemInstanceId=" +
@@ -929,57 +1346,99 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Deletes items from a collection field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the collection field containing the item to be deleted.
+                 *
+                 * @param {String[]} itemInstanceIds
+                 * The items to be deleted.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 deleteCollectionItems: function (formSessionId, modelInstanceId, fieldName, itemInstanceIds, options) {
-                    /// <summary>Deletes items from a collection field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the collection field containing the item to be deleted.</param>
-                    /// <param name="itemInstanceIds" type="Array">The items to be deleted.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the item is deleted successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while deleting the item.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "deleteCollectionItems", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, itemInstanceIds, options, formSessionId);
                 },
 
+                /**
+                 * Deletes all selected items from a collection field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the collection field containing the item to be deleted.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 deleteSelectedCollectionItems: function (formSessionId, modelInstanceId, fieldName, options) {
-                    /// <summary>Deletes all selected items from a collection field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the collection field containing the item to be deleted.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the items are deleted successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while deleting the items.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "deleteSelectedCollectionItems", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Selects or de-selects an item in a collection field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the collection field to be updated.
+                 *
+                 * @param {String} itemInstanceId
+                 * The ID of the item.
+                 *
+                 * @param {Boolean} selected
+                 * The selected state of the item.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 setCollectionItemSelected: function (formSessionId, modelInstanceId, fieldName, itemInstanceId, selected, options) {
-                    /// <summary>Selects or de-selects an item in a collection field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the collection field to be updated.</param>
-                    /// <param name="itemInstanceId" type="String">The ID of the item.</param>
-                    /// <param name="selected" type="Boolean">The selected state of the item.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the item is updated successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while updating the item.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectCollectionItem", formSessionId, modelInstanceId, fieldName) +
                         "&itemInstanceId=" +
@@ -990,20 +1449,36 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Moves an item to a different position in the collection.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and field to be updated.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the field to be updated.
+                 *
+                 * @param {String} fieldName
+                 * The name of the collection field to be updated.
+                 *
+                 * @param {String} itemInstanceId
+                 * The ID of the item.
+                 *
+                 * @param {Number} newIndex
+                 * The new index (zero-based) for the item.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 moveCollectionItem: function (formSessionId, modelInstanceId, fieldName, itemInstanceId, newIndex, options) {
-                    /// <summary>Moves an item to a different position in the collection.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and field to be updated.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the field to be updated.</param>
-                    /// <param name="fieldName" type="String">The name of the collection field to be updated.</param>
-                    /// <param name="itemInstanceId" type="String">The ID of the item to be deleted.</param>
-                    /// <param name="newIndex" type="Number" integer="true">The new index (zero-based) for the item.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "moveCollectionItem", formSessionId, modelInstanceId, fieldName) +
                         "&itemInstanceId=" +
@@ -1014,17 +1489,31 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Saves the form instance on the server.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session to save.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @param {Boolean} [options.returnDataFormItem]
+                 * Flag indicating whether the data form item XML should be returned with the save result.  For backwards compatibility with the Windows ClickOnce shell.
+                 *
+                 * @param {Boolean} [options.storeDataFormItem]
+                 *
+                 * @param {Boolean} [options.skipValidate]
+                 *
+                 * @return {promise}
+                 */
                 confirmForm: function (formSessionId, options) {
-                    /// <summary>Saves the form instance on the server.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session to save.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// returnDataFormItem: Flag indicating whether the data form item XML should be returned with the save result.  For backwards compatibility with the Windows ClickOnce shell.
-                    /// </param>
 
                     var url;
 
@@ -1049,17 +1538,27 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Cancels the form instance on the server and removes it from the session.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session to cancel.
+                 *
+                 * @param {Boolean} overrideDirty
+                 * Flag indicating whether to cancel the form even if its values have changed since it was created.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 cancelSession: function (formSessionId, overrideDirty, options) {
-                    /// <summary>Cancels the form instance on the server and removes it from the session.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session to cancel.</param>
-                    /// <param name="overrideDirty" type="Boolean">Flag indicating whether to cancel the form even if its values have changed since it was created.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url;
 
@@ -1073,19 +1572,33 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Sends a response to a prompt to the server.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that caused the prompt.
+                 *
+                 * @param {String} modelInstanceId
+                 * ID of the model instance that caused the prompt.
+                 *
+                 * @param {String} promptId
+                 * The ID of the prompt being responded to.
+                 *
+                 * @param {String|Number|Boolean|Object} response
+                 * The prompt response.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 handlePrompt: function (formSessionId, modelInstanceId, promptId, response, options) {
-                    /// <summary>Sends a response to a prompt to the server.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that caused the prompt.</param>
-                    /// <param name="modelInstanceId" type="String">ID of the model instance that caused the prompt.</param>
-                    /// <param name="promptId" type="String">The ID of the prompt being responded to.</param>
-                    /// <param name="response" type="String|Number|Boolean|Object">The prompt response.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "handlePrompt", formSessionId, modelInstanceId) +
                         "&promptId=" +
@@ -1094,18 +1607,36 @@
                     return doPost(this, url, response, options, formSessionId);
                 },
 
+                /**
+                 * Invokes an action on the server.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the action.
+                 *
+                 * @param {String} modelInstanceId
+                 * ID of the model instance that contains the action.
+                 *
+                 * @param {String} actionName
+                 * Name of the action to invoke.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @param {Object} [options.parameters]
+                 *
+                 * @param {Object} [options.defaultValues]
+                 *
+                 * @param {String} [options.cancelId]
+                 *
+                 * @return {promise}
+                 */
                 invokeAction: function (formSessionId, modelInstanceId, actionName, options) {
-                    /// <summary>Invokes an action on the server.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the action.</param>
-                    /// <param name="modelInstanceId" type="String">ID of the model instance that contains the action.</param>
-                    /// <param name="actionName" type="String">Name of the action to invoke.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the action is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the action.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var data,
                         url;
@@ -1124,7 +1655,7 @@
                                 data.defaultValues = options.defaultValues;
                             }
                         }
-                        if (options.cancelId) { 
+                        if (options.cancelId) {
                             url += "&cancelId=" + euc(options.cancelId);
                         }
                     } else {
@@ -1134,19 +1665,33 @@
                     return doPost(this, url, data, options, formSessionId);
                 },
 
+                /**
+                 * Confirms a child form that was shown as a result of a form action.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session.
+                 *
+                 * @param {String} modelInstanceId
+                 * ID of the model instance that invoked the action.
+                 *
+                 * @param {String} actionName
+                 * Name of the invoked action.
+                 *
+                 * @param {String} confirmFormSessionId
+                 * The ID of the child form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 confirmFormAction: function (formSessionId, modelInstanceId, actionName, confirmFormSessionId, options) {
-                    /// <summary>Confirms a child form that was shown as a result of a form action.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session.</param>
-                    /// <param name="modelInstanceId" type="String">The ID model that invoked the action.</param>
-                    /// <param name="actionName" type="String">Name of the invoked action.</param>
-                    /// <param name="confirmFormSessionId" type="String">The ID of the child form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "confirmFormAction", formSessionId, modelInstanceId) +
                         "&actionId=" +
@@ -1157,18 +1702,31 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Cancels a child form that was shown as a result of a form action.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session.
+                 *
+                 * @param {String} modelInstanceId
+                 * ID of the model instance that invoked the action.
+                 *
+                 * @param {String} actionName
+                 * Name of the invoked action.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 cancelFormAction: function (formSessionId, modelInstanceId, actionName, options) {
-                    /// <summary>Cancels a child form that was shown as a result of a form action.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session.</param>
-                    /// <param name="modelInstanceId" type="String">The ID model that invoked the action.</param>
-                    /// <param name="actionName" type="String">Name of the invoked action.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
+
                     var url = buildSvcBaseUrl(this, "cancelFormAction", formSessionId, modelInstanceId) +
                         "&actionId=" +
                         euc(actionName);
@@ -1177,48 +1735,80 @@
 
                 },
 
+                /**
+                 * Server side notification that a close form request is being made.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 notifyFormHidden: function (formSessionId, options) {
-                    /// <summary>Server side notification that a close form request is being made.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
+
                     var url = buildSvcBaseUrl(this, "notifyFormHidden", formSessionId);
 
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Server side notification that a close form request is being made.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 notifyFormShown: function (formSessionId, options) {
-                    /// <summary>Server side notification that a close form request is being made.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is created successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while creating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
+
                     var url = buildSvcBaseUrl(this, "notifyFormShown", formSessionId);
 
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 *
+                 * @param {String} start
+                 * The starting row which is being requested.  Start + paging size number of rows should be returned.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeCollectionPageChange: function (formSessionId, modelInstanceId, fieldName, start, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="start" type="String">The starting row which is being requested.  Start + paging size number of rows should be returned.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "invokeCollectionPageChange", formSessionId, modelInstanceId, fieldName) +
                         "&start=" + start;
@@ -1226,36 +1816,64 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 *
+                 * @param {Object} selectionData
+                 * The selection data to be sent to the server. Conforms to the CollectionSelectionModel contract.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeCollectionSelectionUpdate: function (formSessionId, modelInstanceId, fieldName, selectionData, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="selectionData" type="Object">The selection data to be sent to the server. Conforms to the CollectionSelectionModel contract.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "collectionSelectionUpdate", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, selectionData, options, formSessionId);
                 },
 
+                /**
+                 * Selects a search list row to represent the value of the search field.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 *
+                 * @param {String} actionName
+                 * The grid field special action name.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeCollectionSpecialAction: function (formSessionId, modelInstanceId, fieldName, actionName, options) {
-                    /// <summary>Selects a search list row to represent the value of the search field.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="actionName" type="String">The grid field special action name.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "invokeCollectionSpecialAction", formSessionId, modelInstanceId, fieldName) +
                         "&actionname=" + actionName;
@@ -1263,60 +1881,96 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Notifies the UIModel that a file has been selected in the file picker dialog.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldName
+                 *
+                 * @param {String} fileName
+                 * The name of the newly selected file.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 invokeFileChanged: function (formSessionId, modelInstanceId, fieldName, fileName, options) {
-                    /// <summary>Notifies the UIModel that a file has been selected in the file picker dialog.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="fileName" type="String">The name of the newly selected file.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectFile", formSessionId, modelInstanceId, fieldName);
 
                     return doPost(this, url, fileName, options, formSessionId);
                 },
 
-                cancelAction: function (formSessionId, modelInstanceId, fieldId, cancelId, sucessCallback, failureCallback, options) {
-                    /// <summary>Cancels an action on the server.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the model and search field.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the model instance containing the search field.</param>
-                    /// <param name="cancelId" type="String">Uniquely identifies the running action on the server.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the row is selected successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while selecting the row.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
+                /**
+                 * Cancels an action on the server.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the model and search field.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the model instance containing the search field.
+                 *
+                 * @param {String} fieldId
+                 *
+                 * @param {String} cancelId
+                 * Uniquely identifies the running action on the server.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
+                cancelAction: function (formSessionId, modelInstanceId, fieldId, cancelId, options) {
 
                     var url = buildSvcBaseUrl(this, "cancelAction", formSessionId, modelInstanceId, fieldId) +
                         "&cancelId=" + euc(cancelId);
 
                     // Cancelling an action means that an action is currently in process which would ordinarily force this request onto
-                    // the event queue. Bypass it. 
+                    // the event queue. Bypass it.
                     options = options || {};
                     options.bypassQueue = true;
                     return doPost(this, url, null, sucessCallback, failureCallback, options, formSessionId);
                 },
 
+                /**
+                 */
                 getFieldDataSourceUrl: function (formSessionId, modelInstanceId, fieldName) {
                     return buildSvcBaseUrl(this, "getFieldDataSource", formSessionId, modelInstanceId, fieldName);
                 },
 
+                /**
+                 */
                 getFieldDataSource: function (formSessionId, modelInstanceId, fieldName, options) {
                     var url = buildSvcBaseUrl(this, "getFieldDataSource", formSessionId, modelInstanceId, fieldName);
                     return doGet(this, url, options, formSessionId);
                 },
 
+                /**
+                 */
                 getFieldImageUrl: function (formSessionId, modelInstanceId, fieldName) {
                     return buildSvcBaseUrl(this, "getFieldImage", formSessionId, modelInstanceId, fieldName);
                 },
 
+                /**
+                 */
                 getFieldFileUrl: function (formSessionId, modelInstanceId, fieldName, options) {
                     var url;
 
@@ -1329,6 +1983,8 @@
                     return url;
                 },
 
+                /**
+                 */
                 getCustomFileUrl: function (formSessionId, modelInstanceId, key, fileName) {
                     var url;
 
@@ -1340,6 +1996,8 @@
                     return url;
                 },
 
+                /**
+                 */
                 getUploadFieldImageUrl: function (formSessionId, modelInstanceId, fieldName, thumbnailFieldName) {
                     var url;
 
@@ -1352,11 +2010,21 @@
                     return url;
                 },
 
+                /**
+                 * Gets the upload url for a file field.
+                 *
+                 * @param {String} fieldName
+                 * The name of the file field.
+                 *
+                 * @param {String} fileUploadKey
+                 * A unique ID to identify this upload instance.
+                 *
+                 * @param {Boolean} useChunkingUrl
+                 * Whether or not to return a base url that can be used for breaking up a file into multiple smaller uploads.
+                 *
+                 * @return {String}
+                 */
                 getUploadFieldFileUrl: function (fieldName, fileUploadKey, useChunkingUrl) {
-                    /// <summary>Gets the upload url for a file field.</summary>
-                    /// <param name="fieldName" type="String">The name of the file field.</param>
-                    /// <param name="fileUploadKey" type="String">A unique ID to identify this upload instance.</param>
-                    /// <param name="useChunkingUrl" type="Boolean">Whether or not to return a base url that can be used for breaking up a file into multiple smaller uploads.</param>
 
                     var url;
 
@@ -1377,6 +2045,8 @@
                     return url;
                 },
 
+                /**
+                 */
                 createSearchListAddFormSession: function (dataFormSessionId,
                     dataFormModelInstanceId,
                     dataFormFieldName,
@@ -1393,6 +2063,8 @@
                     return doPost(this, url, null, options, dataFormSessionId);
                 },
 
+                /**
+                 */
                 createSearchListActionAddFormSession: function (dataFormSessionId,
                     dataFormModelInstanceId,
                     dataFormActionName,
@@ -1410,6 +2082,8 @@
                     return doPost(this, url, null, options, dataFormSessionId);
                 },
 
+                /**
+                 */
                 confirmSearchListAddForm: function (formSessionId,
                     modelInstanceId,
                     fieldName,
@@ -1424,6 +2098,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 confirmSearchListActionAddForm: function (formSessionId,
                     modelInstanceId,
                     actionName,
@@ -1439,6 +2115,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 confirmSearchListAddQuery: function (formSessionId, modelInstanceId, fieldName, queryInstanceId, selectionId, options) {
                     var url = buildSvcBaseUrl(this, "searchListAddQueryConfirm", formSessionId, modelInstanceId) +
                         "&fieldId=" +
@@ -1451,6 +2129,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 confirmQueryAction: function (formSessionId, modelInstanceId, actionName, queryInstanceId, selectionId, options, queryType) {
                     var url = buildSvcBaseUrl(this, "confirmQueryAction", formSessionId, modelInstanceId) +
                         "&actionId=" +
@@ -1465,6 +2145,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 confirmSearchListAddExportDefinition: function (formSessionId, modelInstanceId, fieldName, exportDefinitionId, options) {
                     var url = buildSvcBaseUrl(this, "searchListAddExportDefinitionConfirm", formSessionId, modelInstanceId) +
                         "&fieldId=" +
@@ -1475,6 +2157,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 confirmExportDefinitionAction: function (formSessionId, modelInstanceId, actionName, exportDefinitionId, options) {
                     var url = buildSvcBaseUrl(this, "confirmExportDefinitionAction", formSessionId, modelInstanceId) +
                         "&actionId=" +
@@ -1485,17 +2169,27 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Resets the values in the form instance.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the form instance.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the form model.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 resetFormSession: function (formSessionId, modelInstanceId, options) {
-                    /// <summary>Resets the values in the form instance.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the form instance.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the form model.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the reset is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the reset.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     if (!options) {
                         options = {};
@@ -1506,17 +2200,27 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Refreshes the form with the latest data.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the form instance.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the form model.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 refreshFormSession: function (formSessionId, modelInstanceId, options) {
-                    /// <summary>Refreshes the form with the latest data.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the form instance.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the form model.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the request is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the request.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     if (!options) {
                         options = {};
@@ -1527,18 +2231,30 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Notifies the server that a duplicate record has been selected in the context of a form session instead of creating a new record.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session that contains the form instance.
+                 *
+                 * @param {String} modelInstanceId
+                 * The ID of the form model.
+                 *
+                 * @param {String} recordId
+                 * The ID of the duplicate record.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 selectDuplicateRecord: function (formSessionId, modelInstanceId, recordId, options) {
-                    /// <summary>Notifies the server that a duplicate record has been selected in the context of a form session instead of creating a new record.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session that contains the form instance.</param>
-                    /// <param name="modelInstanceId" type="String">The ID of the form model.</param>
-                    /// <param name="recordId" type="String">The ID of the duplicate record.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the reset is executed successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while executing the reset.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "selectDuplicateRecord", formSessionId, modelInstanceId) +
                         "&selectedRecordId=" + euc(recordId);
@@ -1546,18 +2262,32 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 * Starts a business process on the server with the information contained in the form session.
+                 *
+                 * @param {String} businessProcessId
+                 * The ID of the business process to start.
+                 *
+                 * @param {String} parameterSetId
+                 * The ID of the parameter set for the business process.
+                 *
+                 * @param {String} dataFormItemKey
+                 * The key of the data form item stored on the server.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @param {String} [options.businessProcessStatusId]
+                 *
+                 * @return {promise}
+                 */
                 startBusinessProcess: function (businessProcessId, parameterSetId, dataFormItemKey, options) {
-                    /// <summary>Starts a business process on the server with the information contained in the form session.</summary>
-                    /// <param name="businessProcessId" type="String">The ID of the business process to start.</param>
-                    /// <param name="parameterSetId" type="String">The ID of the parameter set for the business process.</param>
-                    /// <param name="dataFormItemKey" type="String">The key of the data form item stored on the server.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the business process finishes execution.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while starting the business process.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url,
                         data,
@@ -1578,6 +2308,8 @@
                     return doPost(this, url, data, options);
                 },
 
+                /**
+                 */
                 selectDuplicateRecordAction: function (formSessionId, modelInstanceId, actionName, duplicateFormSessionId, recordId, options) {
                     var url = buildSvcBaseUrl(this, "selectDuplicateRecordAction", formSessionId, modelInstanceId) +
                         "&duplicateFormSessionId=" + euc(duplicateFormSessionId) +
@@ -1587,6 +2319,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 invokeRelationshipMapNodeAction: function (formSessionId, modelInstanceId, fieldId, nodeId, actionName, options) {
                     var url = buildSvcBaseUrl(this, "relationshipMapNodeInvokeAction", formSessionId, modelInstanceId, fieldId) +
                         "&nodeId=" + euc(nodeId) +
@@ -1595,6 +2329,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 buildReportHostUrl: function (reportId, options) {
                     var i,
                         n,
@@ -1645,16 +2381,24 @@
                     return url;
                 },
 
+                /**
+                 * Performs validation on a form session.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session to validate.
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 validateFormSession: function (formSessionId, options) {
-                    /// <summary>Performs validation on a form session.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session to validate.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is validated successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while validating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url,
                         svc;
@@ -1664,6 +2408,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 removeFromQueue: function (formSessionId, modelInstanceId, options) {
                     var i,
                         n,
@@ -1692,22 +2438,34 @@
                     }
                 },
 
+                /**
+                 * returns dataform item for a given form session and model instance.
+                 *
+                 * @param {String} formSessionId
+                 * The ID of the form session to validate.
+                 *
+                 * @param {String} modelInstanceId
+                 *
+                 * @param {Object} [options]
+                 * An object literal that may contain any of the following properties:
+                 *
+                 * @param {Object} [options.scope]
+                 * The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
+                 *
+                 * @param {Boolean} [options.async=true]
+                 * Flag indicating whether the call to the web server should be asynchronous.
+                 *
+                 * @return {promise}
+                 */
                 getFormSessionDataFormItemXml: function (formSessionId, modelInstanceId, options) {
-                    /// <summary>returns dataform item for a given form session and model instance.</summary>
-                    /// <param name="formSessionId" type="String">The ID of the form session to validate.</param>
-                    /// <param name="successCallback" type="Function">The function to be called when the form is validated successfully.  The result object will be passed as the first parameter to the function.</param>
-                    /// <param name="failureCallback" type="Function">The function to be called when an error occurs while validating the form.  The original HTTP request will be passed as the first parameter to the function, and the error message will be passed as the second parameter.</param>
-                    /// <param name="options" type="Object">
-                    /// An object literal that may contain any of the following properties:
-                    /// scope: The scope in which the callback methods will be called.  Default is the current instance of BBUI.uimodeling.Service.
-                    /// async: Flag indicating whether the call to the web server should be asynchronous.  Default is true.
-                    /// </param>
 
                     var url = buildSvcBaseUrl(this, "getFormSessionDataFormItemXml", formSessionId, modelInstanceId);
 
                     return doGet(this, url, options, formSessionId);
                 },
 
+                /**
+                 */
                 reportActionFormSaved: function (formSessionId, modelInstanceId, actionName, options) {
 
                     var url = buildSvcBaseUrl(this, "reportActionFormSaved", formSessionId, modelInstanceId) +
@@ -1716,6 +2474,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 clearParameterDetail: function (formSessionId, modelInstanceId, parameterDetailName, options) {
                     var url;
 
@@ -1727,6 +2487,8 @@
                     return doPost(this, url, null, options, formSessionId);
                 },
 
+                /**
+                 */
                 cancelAsyncOperation: function (cancelId, options) {
 
                     var url = BBUI.urlConcat(this.baseUrl, "uimodel/UIModelingCancelAsyncOperation.ashx?databaseName=") +
@@ -1736,22 +2498,49 @@
 
                     return doGet(this, url, options);
                 }
-            };            
-            
+            };
+
+            /**
+             * @class BBUI.uimodelingservice.bbuiUIModelingService
+             *
+             */
             return {
+                /**
+                 * Create an instance of the UIModeling service.
+                 *
+                 * @param {String} [baseUrl=bbuiUIModelingServiceConfig.baseUrl]
+                 *
+                 * @param {String} [databaseName=bbuiUIModelingServiceConfig.databaseName]
+                 *
+                 * @param {Object} [options]
+                 *
+                 * @param {Object} options.runAs
+                 *
+                 * @param {Object} options.onRequestBegin
+                 *
+                 * @param {Object} options.onRequestEnd
+                 *
+                 * @param {Object} options.httpHeaders
+                 *
+                 * @param {Object} options.useEventQueue
+                 *
+                 * @return {BBUI.uimodeling.Service}
+                 * @return {$http} return.http
+                 * $http TODO this property is referenced via `$http`, not `http`. Need to get docs to render properly.
+                 */
                 create: function (baseUrl, databaseName, options) {
                     var svc;
-                    
+
                     baseUrl = baseUrl || bbuiUIModelingServiceConfig.baseUrl;
                     databaseName = databaseName || bbuiUIModelingServiceConfig.databaseName;
-                    
+
                     if (baseUrl === null || !databaseName) {
                         throw new Error('You must either provide a baseUrl and databaseName as parameters or set them globally using bbuiShellServiceConfig.');
                     }
-                    
+
                     svc = new Service(baseUrl, databaseName, options);
                     svc.$http = $http;
-                    
+
                     return svc;
                 }
             };
