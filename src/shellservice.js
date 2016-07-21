@@ -4,8 +4,17 @@
     'use strict';
 
     angular.module('bbui.shellservice', ['bbui.core'])
+        /**
+         * @class BBUI.shellservice.bbuiShellServiceConfig
+         */
         .constant('bbuiShellServiceConfig', {
+            /**
+             * @cfg {String} baseUrl
+             */
             baseUrl: null,
+            /**
+             * @cfg {String} databaseName
+             */
             databaseName: null
         })
         .factory('bbuiShellService', ['$http', 'bbui', 'bbuiShellServiceConfig', function ($http, BBUI, bbuiShellServiceConfig) {
@@ -131,106 +140,109 @@
                 /**
                  * @class BBUI.webshell.Service
                  * Provides various methods for communicating with the web shell endpoints on the web server.
-                 * <br/><br/>Note that all methods that make a call to the web server have the same last three arguments:
-                 * <div class="mdetail-params">
-                 * <ul>
-                 * <li><tt>successCallback</tt> : Function <div class="sub-desc">The function to be called when request completes successfully.
-                 * The <tt>reply</tt> object will be passed as the first parameter to the function.</div></li>
-                 * <li><tt>failureCallback</tt> : Function <div class="sub-desc">The function to be called when an error occurs during the request.
-                 * The original XMLHttpRequest object will be passed as the first parameter to the function, and the error message will be passed
-                 * as the second parameter.</div></li>
-                 * <li><tt>options</tt> : Object <div class="sub-desc">The following properties apply to all requests.
-                 * Each method may implement its own properties which are documented on the method itself.</div></li>
-                 * <ul>
-                 * <li><tt>scope</tt> : Object <div class="sub-desc">The scope (<tt>this</tt>) to use for the callback functions.</div></li>
-                 * <li><tt>state</tt> : Object <div class="sub-desc">An extra parameter to be passed to the success/failure callback functions
+                 * <br/><br/>
+                 * Note that all methods that make a call to the web server have the same last three arguments:
+                 *
+                 * @param {String} baseUrl
+                 * The base URL to the web server.
+                 *
+                 * @param {String} databaseName
+                 * The name of the database to which to connect.
+                 *
+                 * @param {Object} [options]
+                 * The following properties apply to all requests.
+                 * Each method may implement its own properties which are documented on the method itself.
+                 *
+                 * @param {Object} options.scope
+                 * The scope (<tt>this</tt>) to use for the callback functions.
+                 *
+                 * @param {Object} options.state
+                 * An extra parameter to be passed to the success/failure callback functions
                  * which can be used instead of <tt>scope</tt>. This will be the second parameter passed to the successCallback function or the
-                 * third parameter passed to the failureCallback function.</div></li>
-                 * </ul>
-                 * </ul>
-                 * </div>
+                 * third parameter passed to the failureCallback function.
+                 *
+                 * @param {String} options.proxyUrl
+                 * A URL to a web server that acts as a proxy between the client and the AppFx web server.
+                 * This is useful in cases where the host page is hosted on a server other than the AppFx web server
+                 * and the browser would otherwise block the request for being a cross-site request.
+                 *
+                 * @param {String} options.runAs
+                 *
+                 * @param {Object} options.onRequestBegin
+                 *
+                 * @param {Object} options.onRequestEnd
+                 *
+                 * @param {Object} options.httpHeaders
+                 *
                  * An example performing a record operation a custom page action that illustrates how the success/failure callbacks work:
                  * <pre><code>
-            (function () {
-                // Ensure the webshelltest namespace exists.
-                var ns = BBUI.ns("BBUI.customactions.webshelltest"),
-                    Util = BBUI.forms.Utility;
+(function () {
+    // Ensure the webshelltest namespace exists.
+    var ns = BBUI.ns("BBUI.customactions.webshelltest"),
+        Util = BBUI.forms.Utility;
 
-                ns.MyCustomAction = function (host) {
-                    // Cache the host object so it can be referenced later.
-                    this.host = host;
-                };
+    ns.MyCustomAction = function (host) {
+        // Cache the host object so it can be referenced later.
+        this.host = host;
+    };
 
-                ns.MyCustomAction.prototype = {
+    ns.MyCustomAction.prototype = {
 
-                    executeAction: function (callback) {
-                        var host,
-                            recordOperationId,
-                            webShellSvc;
+        executeAction: function (callback) {
+            var host,
+                recordOperationId,
+                webShellSvc;
 
-                        host = this.host;
-                        webShellSvc = host.webShellSvc;
-                        recordOperationId = "183bf26e-ba1c-4c02-aa43-f0a806f6fe4d";
+            host = this.host;
+            webShellSvc = host.webShellSvc;
+            recordOperationId = "183bf26e-ba1c-4c02-aa43-f0a806f6fe4d";
 
-                        // Callback for when the record operation is performed successfully.
-                        function performSuccess() {
-                            // The record operation is complete.  Call the callback.
-                            callback();
-                        }
+            // Callback for when the record operation is performed successfully.
+            function performSuccess() {
+                // The record operation is complete.  Call the callback.
+                callback();
+            }
 
-                        // Callback for when the record operation fails.
-                        function performFailure(request, error) {
-                            Util.alert(error.message);
-                        }
+            // Callback for when the record operation fails.
+            function performFailure(request, error) {
+                Util.alert(error.message);
+            }
 
-                        // Callback for when getting the prompt succeeds.
-                        function promptSuccess(reply) {
+            // Callback for when getting the prompt succeeds.
+            function promptSuccess(reply) {
 
-                            // Util.confirm() is an asynchronous operation, so create a callback for when the user answers the prompt.
-                            function confirmCallback(result) {
-                                if (result === 1) { // Yes
-                                    // The user confirmed the prompt; perform the record operation.
-                                    webShellSvc.recordOperationPerform(recordOperationId,
-                                        host.getFieldValue("RECORDID"),
-                                        performSuccess,
-                                        performFailure);
-                                }
-                            }
-
-                            Util.confirm(reply.promptText, {
-                                buttonStyle: 2, // Yes/No
-                                callback: confirmCallback
-                            });
-                        }
-
-                        // Callback for when getting the prompt fails.
-                        function promptFailure(request, error) {
-                            Util.alert(error.message);
-                        }
-
-                        // Get the prompt.
-                        webShellSvc.recordOperationGetPrompt(recordOperationId, promptSuccess, promptFailure);
+                // Util.confirm() is an asynchronous operation, so create a callback for when the user answers the prompt.
+                function confirmCallback(result) {
+                    if (result === 1) { // Yes
+                        // The user confirmed the prompt; perform the record operation.
+                        webShellSvc.recordOperationPerform(recordOperationId,
+                            host.getFieldValue("RECORDID"),
+                            performSuccess,
+                            performFailure);
                     }
+                }
 
-                };
+                Util.confirm(reply.promptText, {
+                    buttonStyle: 2, // Yes/No
+                    callback: confirmCallback
+                });
+            }
 
-            })();
+            // Callback for when getting the prompt fails.
+            function promptFailure(request, error) {
+                Util.alert(error.message);
+            }
+
+            // Get the prompt.
+            webShellSvc.recordOperationGetPrompt(recordOperationId, promptSuccess, promptFailure);
+        }
+
+    };
+
+})();
                  * </code></pre>
-                 * @uimodel <span style="color: red;">No</span>
-                 * @pageaction <span style="color: green;">Yes</span>
                  */
                 Service = function (baseUrl, databaseName, options) {
-                    /// <summary>The main AJAX interface between web shell pages and the web server.</summary>
-                    /// <param name="baseUrl" type="String">The base URL to the web server.</param>
-                    /// <param name="databaseName" type="String">The name of the database to which to connect.</param>
-                    /// <param name="options" type="Object" optional="true">
-                    /// An object containing any of the following properties:
-                    /// proxyUrl: A URL to a web server that acts as a proxy between the client and the AppFx web server.
-                    /// This is useful in cases where the host page is hosted on a server other than the AppFx web server
-                    /// and the browser would otherwise block the request for being a cross-site request.
-                    /// </param>
-                    /// <field name="baseUrl" type="String">The base URL to the web server.</field>
-                    /// <field name="databaseName" type="String">The name of the database to which to connect.</field>
 
                     var svc;
 
@@ -251,14 +263,16 @@
                 Service.prototype = {
 
                     /**
-                     * Read-only.  The base URL to the web server.
+                     * @readonly
+                     * The base URL to the web server.
                      * @property baseUrl
                      * @type String
                      */
                     baseUrl: null,
 
                     /**
-                     * Read-only.  The name of the database to which to connect.
+                     * @readonly
+                     * The name of the database to which to connect.
                      * @property databaseName
                      * @type String
                      */
@@ -267,11 +281,16 @@
                     /**
                      * @private
                      * Validates a user name and password for a given user.
+                     *
                      * @param {Object} loginInfo An object with username and password properties.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     login: function (loginInfo, options) {
                         var url;
@@ -284,10 +303,14 @@
                     /**
                      * @private
                      * Removes the session cookie that keeps the user logged in.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     logout: function (options) {
                         var url;
@@ -300,11 +323,16 @@
                     /**
                      * @private
                      * Requests a password reset link and emails it to the associated user.
-                     * @param {Object} emailAddress The user's email address.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     * @param {Object} emailAddress
+                     * The user's email address.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     sendPasswordResetLink: function (emailAddress, options) {
                         var url;
@@ -317,11 +345,17 @@
                     /**
                      * @private
                      * Resets the user's password.
-                     * @param {Object} request An object containing token and newPassword properties.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} request
+                     * An object containing token and newPassword properties.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     resetPassword: function (request, options) {
                         var url;
@@ -334,10 +368,14 @@
                     /**
                      * @private
                      * Starts the user's session and returns navigation information for web shell.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     sessionStart: function (options) {
                         var url;
@@ -350,10 +388,14 @@
                     /**
                      * @private
                      * Gets the site-wide navigation information for web shell.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * </ul>
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @return {promise}
                      */
                     getNavigation: function (options) {
                         var url;
@@ -370,14 +412,28 @@
                     /**
                      * @private
                      * Gets the specified page's metadata.
-                     * @param {String} pageId The ID of the page.
-                     * @param {String} recordId (optional) The ID of the record to be shown by the page.
-                     * @param {Object} options (optional) An object that my contain any of the following properties:
-                     * <ul>
-                     * <li><tt>firstTab</tt> : Indicates that the first visible tab's full metadata should be returned.  Only the caption for other tabs will be returned.</li>
-                     * <li><tt>scope</tt> : See class description for more information.</li>
-                     * <li><tt>tabId</tt> : The ID of the tab whose full metadata should be returned.  Only the caption for other tabs will be returned.</li>
-                     * </ul>
+                     *
+                     * @param {String} pageId
+                     * The ID of the page.
+                     *
+                     * @param {String} [recordId]
+                     * The ID of the record to be shown by the page.
+                     *
+                     * @param {Object} [options]
+                     * An object that my contain any of the following properties:
+                     *
+                     * @param {Boolean} options.firstTab
+                     * Indicates that the first visible tab's full metadata should be returned.  Only the caption for other tabs will be returned.</li>
+                     *
+                     * @param {Object} options.scope
+                     * See class description for more information.
+                     *
+                     * @param {String} options.tabId
+                     * The ID of the tab whose full metadata should be returned.  Only the caption for other tabs will be returned.
+                     *
+                     * @param {String} options.listBuilderInstanceId
+                     *
+                     * @return {promise}
                      */
                     getPage: function (pageId, recordId, options) {
                         var url;
@@ -399,14 +455,17 @@
                     /**
                     * @private
                     * Gets the specified page's metadata.
-                    * @param {String} pageId The ID of the page.
-                    * @param {String} recordId (optional) The ID of the record to be shown by the page.
-                    * @param {Object} options (optional) An object that my contain any of the following properties:
-                    * <ul>
-                    * <li><tt>firstTab</tt> : Indicates that the first visible tab's full metadata should be returned.  Only the caption for other tabs will be returned.</li>
-                    * <li><tt>scope</tt> : See class description for more information.</li>
-                    * <li><tt>tabId</tt> : The ID of the tab whose full metadata should be returned.  Only the caption for other tabs will be returned.</li>
-                    * </ul>
+                    *
+                    * @param {String} pageId
+                    * The ID of the page.
+                    *
+                    * @param {Object} [options]
+                    * An object that my contain any of the following properties:
+                    *
+                    * @param {Object} options.scope
+                    * See class description for more information.
+                    *
+                    * @return {promise}
                     */
                     getPageIsCustomizable: function (pageId, options) {
                         var url;
@@ -421,13 +480,18 @@
                     /**
                      * @private
                      * Gets the specified page tab's metadata.
-                     * @param {String} pageId The ID of the page.
+                     *
+                     * @param {String} pageId
+                     * The ID of the page.
+                     *
                      * @param {String} tabId The ID of the tab.
                      * @param {String} recordId The ID of the record to be shown by the page.
                      * @param {Object} options (optional) An object that my contain any of the following properties:
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     getPageTab: function (pageId, tabId, recordId, options) {
                         var url;
@@ -445,6 +509,8 @@
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     getReportPage: function (reportId, options) {
                         var url;
@@ -480,6 +546,8 @@
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     getFunctionalAreaTaskAction: function (functionalAreaId, taskId, options) {
                         var url;
@@ -503,6 +571,8 @@
                     * @taskId {String} The ID of the task
                     * @param {Function} successCallback (optional) See class description for more information.
                     * @param {Function} failureCallback (optional) See class description for more information.
+                     *
+                     * @return {promise}
                     */
                     getTaskAction: function (taskId, options) {
                         var url;
@@ -526,6 +596,8 @@
                      * @param {Object} options (optional) An object that my contain any of the following properties:
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
+                     *
+                     * @return {promise}
                      * </ul>
                      */
                     getPageAction: function (pageId, actionId, contextRecordId, options) {
@@ -549,6 +621,8 @@
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     getPageSection: function (pageId, tabId, sectionId, contextRecordId, options) {
                         var url;
@@ -558,6 +632,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageDataFormSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, formSessionId, modelInstanceId, options) {
                         var url;
 
@@ -570,6 +647,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageReportSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, options) {
                         var reportValues,
                             url;
@@ -584,6 +664,9 @@
                     },
 
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageUIWidgetSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, options) {
                         var row = null,
                             url;
@@ -603,6 +686,9 @@
                         return doPost(this, url, row, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageUrlSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, options) {
                         var url;
 
@@ -617,6 +703,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageDataListSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, row, options) {
                         var url;
 
@@ -637,6 +726,9 @@
                         return doPost(this, url, row, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageListBuilderSectionAction: function (pageId, tabId, sectionId, actionId, contextRecordId, row, options) {
                         var url;
 
@@ -649,6 +741,9 @@
                         return doPost(this, url, row, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getListBuilderAvailableColumns: function (queryViewId, options) {
                         var url;
 
@@ -657,6 +752,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     listBuilderGetInstanceXml: function (queryViewId, request, options) {
                         var url;
 
@@ -671,6 +769,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     listBuilderGetInstance: function (listBuilderInstanceId, options) {
                         var url;
 
@@ -679,6 +780,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     listBuilderClearAllSettings: function (userSettingsPath, queryViewId, options) {
 
                         var url;
@@ -690,6 +794,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQueryClearAllSettings: function (userSettingsPath, adHocQueryId, options) {
                         var url;
 
@@ -700,6 +807,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getAdHocQueryAvailableColumns: function (adHocQueryId, options) {
                         var url;
 
@@ -708,6 +818,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageSummarySectionAction: function (pageId, actionId, contextRecordId, formSessionId, modelInstanceId, options) {
                         var url;
 
@@ -720,6 +833,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     evaluateDataListSectionActions: function (pageId, tabId, sectionId, contextRecordId, row, options) {
                         var url;
 
@@ -734,6 +850,9 @@
                         return doPost(this, url, row, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     evaluateListBuilderSectionActions: function (pageId, tabId, sectionId, contextRecordId, row, options) {
                         var url;
 
@@ -746,6 +865,9 @@
                         return doPost(this, url, row, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     evaluateDataFormSectionActions: function (pageId, tabId, sectionId, contextRecordId, formSessionId, modelInstanceId, options) {
                         var url;
 
@@ -758,6 +880,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     dataListGetOutputDefinition: function (dataListId, options) {
                         var url;
 
@@ -769,6 +894,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     queryViewGetOutputDefinition: function (queryViewId, options) {
                         var url;
 
@@ -785,8 +913,6 @@
                      * to the successCallback function.
                      * @param {String} dataListId The ID of the data list to load.
                      * @param {String} contextRecordId (optional) The ID of the data list's context record.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
                      * @param {Object} options (optional) An object that my contain any of the following properties:
                      * <ul>
                      * <li><tt>pageRecordId</tt> : The ID of the page's context record where the data list is rendered.</li>
@@ -797,6 +923,8 @@
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * <li><tt>userSettingsPath</tt> : The path used as the key to store user information about the data list, such as column sizes or the last filter values used.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     dataListLoad: function (dataListId, contextRecordId, options) {
                         var sb,
@@ -838,13 +966,13 @@
                      * Loads the results of the specified simple data list and passes the {@link BBUI.webshell.servicecontracts.SimpleDataListLoadReply reply object}
                      * to the successCallback function.
                      * @param {String} simpleDataListId The ID of the simple data list to load.
-                     * @param {Function} successCallback (optional) See class description for more information.
-                     * @param {Function} failureCallback (optional) See class description for more information.
                      * @param {Object} options (optional) An object that my contain any of the following properties:
                      * <ul>
                      * <li><tt>parameters</tt> : An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the simple data list results.</li>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     simpleDataListLoad: function (simpleDataListId, options) {
                         var url;
@@ -859,6 +987,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildPageSectionDataListResultsUrl: function (pageId, tabId, sectionId, dataListId, options) {
                         var sb,
                             url;
@@ -889,6 +1020,9 @@
                         return url;
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildPageSectionAdHocQueryListResultsUrl: function (pageId, tabId, sectionId, adHocQueryId, queryViewId, options) {
                         var sb,
                             svc = this,
@@ -917,6 +1051,9 @@
                         return url;
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildPageSectionListBuilderResultsUrl: function (pageId, tabId, sectionId, queryViewId, options) {
                         var sb,
                             svc = this,
@@ -947,6 +1084,9 @@
                         return url;
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     listBuilderClearCachedResults: function (moreRowsRangeKey, options) {
                         var url,
                             svc = this;
@@ -958,6 +1098,9 @@
                         return doGet(svc, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     pageSectionDataListLoad: function (pageId, tabId, sectionId, dataListId, options) {
                         var url;
 
@@ -977,6 +1120,8 @@
                      * <ul>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     recordOperationGetPrompt: function (recordOperationId, recordId, options) {
                         var url;
@@ -1003,6 +1148,8 @@
                      * <li><tt>parameters</tt> : An array of objects containing <tt>name</tt> and <tt>value</tt> properties to pass as parameters to the record operation.</li>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     recordOperationPerform: function (recordOperationId, recordId, options) {
                         var url,
@@ -1031,6 +1178,9 @@
                         return doPost(this, url, data, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     searchListGetOutputDefinition: function (searchListId, options) {
                         var url;
 
@@ -1041,6 +1191,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     searchListQuickFind: function (searchListId, criteria, options) {
                         var url;
 
@@ -1058,6 +1211,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     codeTableEntrySave: function (codeTableName, codeTableEntryId, request, options) {
                         var url;
 
@@ -1070,6 +1226,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     kpiDashboardGetDefinition: function (options) {
                         var url;
 
@@ -1082,6 +1241,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     queryViewGetFieldFindResults: function (request, options) {
                         var url;
 
@@ -1090,6 +1252,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     queryViewGetTree: function (id, options, forExport, forReportModelGenerator) {
                         var url;
 
@@ -1112,6 +1277,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     queryViewGetMetaData: function (id, options) {
                         var url;
 
@@ -1122,6 +1290,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     queryViewGetTreeNodeFields: function (node, options, forReportModelGenerator) {
                         var url;
 
@@ -1138,6 +1309,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildQueryViewGetTreeNodeChildrenUrl: function (queryViewId, forExport, forReportModelGenerator) {
                         var url;
 
@@ -1158,6 +1332,9 @@
                         return url;
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQueryProcess: function (request, options) {
                         var cancelCallback,
                             requestObj,
@@ -1185,6 +1362,9 @@
                         return doPost(svc, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQueryGetResults: function (request, options) {
                         var url;
 
@@ -1202,6 +1382,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     cancelAsyncOperation: function (cancelId, options) {
                         var url;
 
@@ -1212,6 +1395,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildAdHocQueryExportUrl: function (options) {
                         var url;
 
@@ -1227,6 +1413,9 @@
                         return url.join("");
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildListBuilderExportUrl: function (options) {
                         var url;
 
@@ -1244,6 +1433,9 @@
                         return url.join("");
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildAdHocQueryListExportUrl: function (options) {
                         var url;
 
@@ -1262,6 +1454,9 @@
                         return url.join("");
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQuerySave: function (request, options) {
                         var url;
 
@@ -1270,6 +1465,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQuerySaveDataList: function (request, options) {
                         var url;
 
@@ -1278,6 +1476,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQuerySaveReport: function (request, options) {
                         var url;
 
@@ -1286,6 +1487,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQuerySaveSmartQuery: function (request, options) {
                         var url;
 
@@ -1293,6 +1497,11 @@
 
                         return doPost(this, url, request, options);
                     },
+
+
+                    /**
+                     * @return {promise}
+                     */
                     adHocQueryGetDefinition: function (id, options) {
                         var definitionType = options.definitionType,
                             throwOnInvalidFields = options.throwOnInvalidFields,
@@ -1315,6 +1524,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     adHocQueryDelete: function (id, options) {
                         var url;
 
@@ -1325,6 +1537,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     exportDefinitionSave: function (request, options) {
                         var url;
 
@@ -1333,6 +1548,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     exportDefinitionGetDefinition: function (id, options) {
                         var url;
 
@@ -1343,6 +1561,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     smartQueryProcess: function (request, options) {
                         var cancelCallback,
                             requestObj,
@@ -1370,6 +1591,9 @@
                         return doPost(svc, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     smartQueryGetResults: function (request, options) {
                         var url;
 
@@ -1387,6 +1611,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildSmartQueryExportUrl: function (options) {
                         var url;
 
@@ -1401,6 +1628,9 @@
                         return url.join("");
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userGetFunctionalAreaHistory: function (functionalAreaId, options) {
                         var url;
 
@@ -1430,6 +1660,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateDataFormSettings: function (formSessionId, userSettingsPath, options) {
                         var url;
 
@@ -1442,6 +1675,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateSelectedPervasiveSearchTask: function (pervasiveSearchTaskId, options) {
                         var url;
 
@@ -1454,6 +1690,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateShortcuts: function (request, options) {
                         var url;
 
@@ -1472,6 +1711,9 @@
                         return doPost(this, url, request, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdatePageActionGroupSettings: function (pageId, actionGroups, options) {
                         var url;
 
@@ -1482,6 +1724,9 @@
                         return doPost(this, url, actionGroups, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateFunctionalAreaActionGroupSettings: function (functionalAreaId, actionGroups, options) {
                         var url;
 
@@ -1492,6 +1737,9 @@
                         return doPost(this, url, actionGroups, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdatePageDataListSettings: function (pageId, sectionId, dataListId, settings, options) {
                         var url;
 
@@ -1502,6 +1750,9 @@
                         return doPost(this, url, settings, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdatePageListBuilderSettings: function (queryViewId, userSettingsPath, settings, options) {
                         var url;
 
@@ -1524,6 +1775,9 @@
                         return doPost(this, url, settings, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateAdHocQueryListBuilderSettings: function (queryViewId, adHocQueryId, userSettingsPath, settings, options) {
                         var url;
 
@@ -1538,6 +1792,9 @@
                         return doPost(this, url, settings, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdatePageSectionSettings: function (pageId, sections, options) {
                         var url;
 
@@ -1548,6 +1805,9 @@
                         return doPost(this, url, sections, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdatePageTabSettings: function (pageId, tabs, options) {
                         var url;
 
@@ -1558,6 +1818,9 @@
                         return doPost(this, url, tabs, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userSetFeatureTipSeen: function (featureTipId, tipSeen, options) {
                         var url;
 
@@ -1566,6 +1829,9 @@
                         return doPost(this, url, {featureTipId: featureTipId, tipSeen: tipSeen}, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userGetFeatureTipSeen: function (featureTipId, setTipAsSeen, options) {
                         var url;
 
@@ -1574,6 +1840,9 @@
                         return doPost(this, url, {featureTipId: featureTipId, setTipAsSeen: setTipAsSeen}, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateSearchListGridSettings: function (searchlistid, gridSettings, options) {
                         var url;
 
@@ -1584,6 +1853,9 @@
                         return doPost(this, url, gridSettings, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userGetSearchListGridSettings: function (searchlistid, options) {
                         var url;
 
@@ -1594,6 +1866,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     userUpdateActionPanelSettings: function (settings, options) {
                         var url;
 
@@ -1602,6 +1877,9 @@
                         return doPost(this, url, settings, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     featureSearch: function (criteria, onlyRssFeeds, options) {
                         var url;
 
@@ -1616,6 +1894,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildRssFeedUrl: function (dataListId, contextRecordId) {
                         var url;
 
@@ -1641,6 +1922,8 @@
                      * <li><tt>recordId</tt> : The ID of the record for the data form.</li>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     dataFormLoad: function (dataFormInstanceId, options) {
                         var svc,
@@ -1676,6 +1959,8 @@
                      * <li><tt>recordId</tt> : The ID of the record for the data form.</li>
                      * <li><tt>scope</tt> : See class description for more information.</li>
                      * </ul>
+                     *
+                     * @return {promise}
                      */
                     dataFormSave: function (dataFormInstanceId, options) {
                         var svc,
@@ -1707,6 +1992,9 @@
                         return doPost(this, url, data, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     taskWizardGetDefinition: function (taskWizardId, options) {
                         var url;
 
@@ -1717,6 +2005,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     taskWizardGetTaskStatus: function (taskId, options) {
                         var url;
 
@@ -1727,6 +2018,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {String}
+                     */
                     buildReportExportUrl: function (reportId, historyId, exportType, deviceInfo, dataFormItemKey, fileName) {
                         var url;
 
@@ -1758,6 +2052,9 @@
                         return url;
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     cacheDataFormItem: function (values, options) {
                         var url,
                             data;
@@ -1773,6 +2070,9 @@
                         return doPost(this, url, data, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     idMap: function (idMapperId, sourceId, options) {
                         var url,
                             data;
@@ -1787,6 +2087,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     securityUserGrantedFeature: function (id, featureType, options) {
                         var url,
                             data;
@@ -1798,6 +2101,9 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     loadCatalogItem: function (sourceType, sourceName, itemResourceName, options) {
                         var url;
 
@@ -1809,6 +2115,9 @@
                         return doPost(this, url, null, options);
                     },
 
+                    /**
+                     * @return {promise}
+                     */
                     getPageHelpKey: function (pageId, tabId, sectionId, recordId, options) {
                         var url;
 
@@ -1817,14 +2126,20 @@
                         return doGet(this, url, options);
                     },
 
+                    /**
+                     */
                     buildSvcBaseUrl: function (action) {
                         return buildSvcBaseUrl(this, action);
                     },
 
+                    /**
+                     */
                     doGet: function (url, options) {
                         return doRequest(this, "GET", url, null, options);
                     },
 
+                    /**
+                     */
                     doPost: function (url, data, options) {
                         return doRequest(this, "POST", url, data, options);
                     }
@@ -1832,7 +2147,14 @@
 
             }());
 
+            /**
+             * @class BBUI.shellservice.bbuiShellService
+             */
             return {
+                /**
+                 *
+                 * @return {BBUI.webshell.Service}
+                 */
                 create: function (baseUrl, databaseName, options) {
                     var svc;
 
