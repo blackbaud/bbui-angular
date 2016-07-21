@@ -5,7 +5,7 @@
 
     angular.module('bbui.shellservice', ['bbui.core'])
         /**
-         * @class BBUI.shellservice.bbuiShellServiceConfig
+         * @class bbui.shellservice.bbuiShellServiceConfig
          */
         .constant('bbuiShellServiceConfig', {
             /**
@@ -138,7 +138,7 @@
                 }
 
                 /**
-                 * @class BBUI.webshell.Service
+                 * @class bbui.shellservice.bbuiShellService.Service
                  * Provides various methods for communicating with the web shell endpoints on the web server.
                  * <br/><br/>
                  * Note that all methods that make a call to the web server have the same last three arguments:
@@ -174,73 +174,6 @@
                  *
                  * @param {Object} options.httpHeaders
                  *
-                 * An example performing a record operation a custom page action that illustrates how the success/failure callbacks work:
-                 * <pre><code>
-(function () {
-    // Ensure the webshelltest namespace exists.
-    var ns = BBUI.ns("BBUI.customactions.webshelltest"),
-        Util = BBUI.forms.Utility;
-
-    ns.MyCustomAction = function (host) {
-        // Cache the host object so it can be referenced later.
-        this.host = host;
-    };
-
-    ns.MyCustomAction.prototype = {
-
-        executeAction: function (callback) {
-            var host,
-                recordOperationId,
-                webShellSvc;
-
-            host = this.host;
-            webShellSvc = host.webShellSvc;
-            recordOperationId = "183bf26e-ba1c-4c02-aa43-f0a806f6fe4d";
-
-            // Callback for when the record operation is performed successfully.
-            function performSuccess() {
-                // The record operation is complete.  Call the callback.
-                callback();
-            }
-
-            // Callback for when the record operation fails.
-            function performFailure(request, error) {
-                Util.alert(error.message);
-            }
-
-            // Callback for when getting the prompt succeeds.
-            function promptSuccess(reply) {
-
-                // Util.confirm() is an asynchronous operation, so create a callback for when the user answers the prompt.
-                function confirmCallback(result) {
-                    if (result === 1) { // Yes
-                        // The user confirmed the prompt; perform the record operation.
-                        webShellSvc.recordOperationPerform(recordOperationId,
-                            host.getFieldValue("RECORDID"),
-                            performSuccess,
-                            performFailure);
-                    }
-                }
-
-                Util.confirm(reply.promptText, {
-                    buttonStyle: 2, // Yes/No
-                    callback: confirmCallback
-                });
-            }
-
-            // Callback for when getting the prompt fails.
-            function promptFailure(request, error) {
-                Util.alert(error.message);
-            }
-
-            // Get the prompt.
-            webShellSvc.recordOperationGetPrompt(recordOperationId, promptSuccess, promptFailure);
-        }
-
-    };
-
-})();
-                 * </code></pre>
                  */
                 Service = function (baseUrl, databaseName, options) {
 
@@ -580,7 +513,7 @@
                      * @private
                      * Returns a task as the variable reply for the callback
                      *
-                     * @taskId {String}
+                     * @param {String} taskId
                      * The ID of the task.
                      *
                      * @param {Object} [options]
@@ -2232,12 +2165,12 @@
             }());
 
             /**
-             * @class BBUI.shellservice.bbuiShellService
+             * @class bbui.shellservice.bbuiShellService
              */
             return {
                 /**
                  *
-                 * @return {BBUI.webshell.Service}
+                 * @return {bbui.shellservice.bbuiShellService.Service}
                  */
                 create: function (baseUrl, databaseName, options) {
                     var svc;
