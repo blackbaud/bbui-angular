@@ -5,9 +5,9 @@
 
     angular.module('bbui.uimodelingservice', [])
         /**
-         * @class BBUI.uimodelingservice.bbuiUIModelingServiceConfig
+         * @class bbui.uimodelingservice.bbuiUIModelingServiceConfig
          *
-         * Configuration for {@link BBUI.uimodelingservice.bbuiUIModelingService bbuiUIModelingService}.
+         * Configuration for {@link bbui.uimodelingservice.bbuiUIModelingService bbuiUIModelingService}.
          */
         .constant('bbuiUIModelingServiceConfig', {
             /**
@@ -122,7 +122,7 @@
             }
 
             /**
-             * @class BBUI.uimodeling.Service
+             * @class bbui.uimodelingservice.bbuiUIModelingService.Service
              * Provides various methods for communicating changes to a UI model to the web server.
              *
              * @param {String} baseUrl
@@ -2501,7 +2501,7 @@
             };
 
             /**
-             * @class BBUI.uimodelingservice.bbuiUIModelingService
+             * @class bbui.uimodelingservice.bbuiUIModelingService
              *
              */
             return {
@@ -2524,8 +2524,8 @@
                  *
                  * @param {Object} options.useEventQueue
                  *
-                 * @return {BBUI.uimodeling.Service}
-                 * @return {$http} return.http
+                 * @return {bbui.uimodelingservice.bbuiUIModelingService.Service}
+                 * @return {Object} return.http
                  * $http TODO this property is referenced via `$http`, not `http`. Need to get docs to render properly.
                  */
                 create: function (baseUrl, databaseName, options) {
