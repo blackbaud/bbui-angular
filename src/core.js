@@ -12,21 +12,6 @@
                 euc = $window.encodeURIComponent,
                 TYPE_STRING = "string";
 
-            function emptyFn() {
-            }
-
-            function propOrDefault(obj, name, defaultValue) {
-                var value;
-
-                value = obj[name];
-
-                if (typeof value === "undefined") {
-                    return defaultValue;
-                }
-
-                return value;
-            }
-
             function objEquals(value1, value2, ignoreCase) {
                 if (value1 === value2) {
                     return true;

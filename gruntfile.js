@@ -1,9 +1,11 @@
 /// <vs BeforeBuild='default' SolutionOpened='watch' />
 /*jslint nomen: true */
-/*global module, require */
+/*global module */
 
 module.exports = function (grunt) {
     'use strict';
+
+    var jsHintFiles = ['*.js', 'src/**/*.js', 'test/**/*.js'];
 
     grunt.initConfig({
         buildPath: grunt.option('buildpath') || 'dist',
@@ -59,6 +61,18 @@ module.exports = function (grunt) {
 
                 }
             }
+        },
+        jshint: {
+            options: {
+                jshintrc: true
+            },
+            all: jsHintFiles
+        },
+        jscs: {
+            options: {
+                config: '.jscsrc'
+            },
+            all: jsHintFiles
         }
     });
 
@@ -66,9 +80,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
     grunt.loadNpmTasks('grunt-jsduck');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-jscs');
 
     grunt.registerTask('default', ['concat_sourcemap']);
     grunt.registerTask('build', ['default']);
     grunt.registerTask('docs', ['jsduck']);
+    grunt.registerTask('lint', ['jshint', 'jscs']);
 
 };
