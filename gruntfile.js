@@ -78,6 +78,22 @@ module.exports = function (grunt) {
                 config: '.jscsrc'
             },
             all: jsHintFiles
+        },
+        karma: {
+            options: {
+                configFile: './karma.conf.js'
+            },
+            unit: {
+                singleRun: true
+            },
+            watch: {
+                background: true
+            }
+        },
+        exec: {
+            uploadCoverage: {
+                cmd: './node_modules/.bin/codecov'
+            }
         }
     });
 
@@ -87,10 +103,26 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsduck');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('default', ['concat_sourcemap']);
     grunt.registerTask('build', ['default']);
     grunt.registerTask('docs', ['jsduck']);
     grunt.registerTask('lint', ['jshint', 'jscs']);
 
+    grunt.registerTask('unittest', 'karma:unit');
+
+    // This is the main entry point for testing skyux.
+    grunt.registerTask('test', function () {
+        var tasks;
+
+        tasks = [
+            'lint',
+            'build',
+            'unittest'
+            //'exec:uploadCoverage'
+        ];
+
+        grunt.task.run(tasks);
+    });
 };

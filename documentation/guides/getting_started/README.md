@@ -15,7 +15,7 @@ With Angular, you can create a single-page application that looks updated and pr
 Download the bbui-angular source code via [Bower](http://bower.io/).
 
 `bower install bbui-angular`
-<!--`bower install git+https://github.com/blackbaud/bbui-angular#~1.0.3`-->
+<!--`bower install git+https://github.com/blackbaud/bbui-angular#~1.0.4`-->
 
 ## Next Steps
 

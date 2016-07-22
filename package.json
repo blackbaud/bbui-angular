@@ -1,7 +1,7 @@
 {
   "name": "bbui-angular",
   "description": "A portion of the Infinity BBUI API ported to Angular services.",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/blackbaud/bbui-angular"
@@ -26,6 +26,16 @@
     "grunt-jsduck": "~1.0.1",
     "grunt-concat-sourcemap": "0.4.3",
     "grunt-contrib-jshint": "1.0.0",
-    "grunt-jscs": "2.8.0"
+    "grunt-jscs": "2.8.0",
+    "jasmine": "~2.4.1",
+    "jasmine-core": "^2.4.1",
+    "grunt-karma": "0.12.2",
+    "karma": "0.13.22",
+    "karma-coverage": "0.5.5",
+    "karma-jasmine": "0.3.8",
+    "karma-chrome-launcher": "0.2.2",
+    "codecov": "1.0.1",
+    "angular-mocks": "1.5.3",
+    "blackbaud-skyux": "1.6.6"
   }
 }
