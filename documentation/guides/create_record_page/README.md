@@ -126,3 +126,11 @@ Change your Angular service from returning hard-coded constituent information to
 Because the requests to CRM can take some time, it's a good idea to add a spinner so that the user knows that something is happening. Use the SKY UX [wait component](http://skyux.developer.blackbaud.com/components/wait/) to easily show that something is happening. In the controller above, we set the `loading` value to true when we started the request, and to false when the request was finished.
 
 `<div ng-controller="ConstituentController as constitCtrl" bb-wait="loading">`
+
+Now you have a SKY UX application that can talk to your Blackbaud CRM installation! Because we are using the webshell service to talk to CRM, security is included. You shouldn't need to do any additional work to get the security for your application to work just like it does in CRM. You will be using CRM feature specs behind the scenes, so any user that does not have rights to a certain feature will not be able to successfully complete the call.
+
+This does mean that you need to check for feature permissions in some cases. For example, if a user does not have rights an edit form, you should hide or disable the button conditionally.
+
+<hr>
+
+<p><strong>Next step:</strong> <a href="#!/guide/navigation">Navigation »</a></p>

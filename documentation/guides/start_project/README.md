@@ -54,6 +54,48 @@ Next, add bbui-angular to the page.
   &lt;/body>
 &lt;/html></code></pre>
 
+## Web.config
+
+You need to create a web.config to turn anonymous authentication on for this page. If you don't allow anonymous authentication, users will be prompted to log in before they get to your page, and, with some authentication set ups, will have to log in a second time.
+
+<pre><code>
+&lt;configuration>
+	&lt;location path="index.html">
+		&lt;system.webServer>
+			&lt;security>
+				&lt;authentication>
+					&lt;basicAuthentication enabled="false" />
+					&lt;anonymousAuthentication enabled="true" />
+					&lt;windowsAuthentication enabled="false" />
+				&lt;/authentication>
+			&lt;/security>
+		&lt;/system.webServer>
+	&lt;/location>
+	&lt;location path="js/index.js">
+		&lt;system.webServer>
+			&lt;security>
+				&lt;authentication>
+					&lt;basicAuthentication enabled="false" />
+					&lt;anonymousAuthentication enabled="true" />
+					&lt;windowsAuthentication enabled="false" />
+				&lt;/authentication>
+			&lt;/security>
+		&lt;/system.webServer>
+	&lt;/location>
+    &lt;location path="bower_components/bbui-angular/dist/js/bbui.js">
+		&lt;system.webServer>
+			&lt;security>
+				&lt;authentication>
+					&lt;basicAuthentication enabled="false" />
+					&lt;anonymousAuthentication enabled="true" />
+					&lt;windowsAuthentication enabled="false" />
+				&lt;/authentication>
+			&lt;/security>
+		&lt;/system.webServer>
+	&lt;/location>
+&lt;/configuration>
+</code></pre>
+
 You should now be able to browse to your page in a web browser. Check the browser's console to make sure you don't have any errors.
 
 ## Add content to the page
@@ -81,9 +123,9 @@ You should now be able to browse to your page in a web browser. Check the browse
 
 <pre><code class="language-markup">&lt;html charset="utf-8" ng-app="skytutorial"&gt;</code></pre>
 
-<p>To define <code>skytutorial</code> as an Angular module in JavaScript so that Angular knows what to wire up to your HTML page, create an <code>index.js</code> file next to <code>index.html</code> at the root of your project. Add a reference to your <code>index.js</code> to the bottom of the <code>&#60;body&#62;</code> element.</p>
+<p>To define <code>skytutorial</code> as an Angular module in JavaScript so that Angular knows what to wire up to your HTML page, create an <code>index.js</code> file in a `js` folder next to <code>index.html</code> at the root of your project. Add a reference to your <code>index.js</code> to the bottom of the <code>&#60;body&#62;</code> element.</p>
 
-<pre><code class="language-markup">&lt;script src="index.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-markup">&lt;script src="js/index.js"&gt;&lt;/script&gt;</code></pre>
 
 <p>In the <code>index.js</code> file, add the <code>sky</code> and `bbui` modules as dependencies on your <code>skytutorial</code> module by putting them in brackets as the second argument to <code>angular.module()</code>. This ensures that all SKY UX and bbui-angular functionality is available to your Angular application.</p>
 
@@ -160,7 +202,7 @@ You should now be able to browse to your page in a web browser. Check the browse
   &lt;/div>
   &lt;script src="https://sky.blackbaudcdn.net/skyux/1.6.6/js/sky-bundle.min.js" integrity="sha384-DD+Y69jYPzp2eVhGSZyfXyW+TxZpImxAF4T16WyV4YVpycGhkUVzOiCE0jKscve/" crossorigin="anonymous">&lt;/script>
   &lt;script src="bower_components/bbui-angular/dist/js/bbui.js">&lt;/script>
-  &lt;script src="index.js">&lt;/script>
+  &lt;script src="js/index.js">&lt;/script>
 &lt;/body>
 
 &lt;/html></code></pre>

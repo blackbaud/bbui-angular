@@ -25,6 +25,12 @@
                 "url": "create_record_page",
                 "title": "Create a record page",
                 "description": "Create a page with some content from Blackbaud CRM."
+            },
+            {
+                "name": "navigation",
+                "url": "navigation",
+                "title": "Navigation",
+                "description": "Navigate around your single-page application."
             }
         ]
     }

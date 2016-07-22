@@ -22,3 +22,4 @@ Download the bbui-angular source code via [Bower](http://bower.io/).
 * [Start a project »](#!/guide/start_project)
 * [Authentication »](#!/guide/authentication)
 * [Create a record page »](#!/guide/create_record_page)
+* [Navigation »](#!/guide/navigation)
