@@ -386,5 +386,112 @@ describe('core', function () {
 
         });
 
+        describe("urlConcat", function () {
+
+            it("does not error with invalid arguments", function () {
+                expect(bbui.urlConcat()).toBe(null);
+                expect(bbui.urlConcat(null)).toBe(null);
+                expect(bbui.urlConcat(undefined)).toBe(null);
+                expect(bbui.urlConcat("1", null)).toBe(null);
+            });
+
+            it("concatenates urls", function () {
+                expect(bbui.urlConcat("1")).toBe("1");
+                expect(bbui.urlConcat("1", "2", "3", "4", "5")).toBe("1/2/3/4/5");
+            });
+
+            it("adds slashes when appropriate", function () {
+                expect(bbui.urlConcat("1/", "2", "3/", "4", "/5")).toBe("1/2/3/4/5");
+            });
+
+        });
+
+        describe("argsToArray", function () {
+
+            it("has expected results with invalid parameters", function () {
+                try {
+                    bbui.argsToArray();
+                    fail("did not encounter expected error");
+                } catch (ex) {
+                    expect(ex.message).toBe("Array.prototype.slice called on null or undefined");
+                }
+            });
+
+            it("works with empty string", function () {
+                expect(bbui.argsToArray("")).toEqual([]);
+            });
+
+            it("returns expected values", function () {
+                expect(bbui.argsToArray("asdf")).toEqual(["a", "s", "d", "f"]);
+            });
+
+            it("works with start parameter", function () {
+                expect(bbui.argsToArray("asdf", 1)).toEqual(["s", "d", "f"]);
+                expect(bbui.argsToArray("asdf", -1)).toEqual(["f"]);
+            });
+
+        });
+
+        describe("arrayToQueryString", function () {
+
+            var items;
+
+            beforeEach(function () {
+
+                items = [
+                    {
+                        name: "databaseName",
+                        value: "BBInfinity"
+                    },
+                    {
+                        name: "asdf",
+                        value: "!@#?$"
+                    }
+                ];
+
+            });
+
+            it("works with empty parameters", function () {
+                expect(bbui.arrayToQueryString()).toBe("");
+                expect(bbui.arrayToQueryString([])).toBe("");
+            });
+
+            it("creates a query string", function () {
+                expect(bbui.arrayToQueryString(items)).toBe("databaseName=BBInfinity&asdf=!%40%23%3F%24");
+            });
+
+            it("prepends the prefix", function () {
+                expect(bbui.arrayToQueryString(items, "pre_")).toBe("pre_databaseName=BBInfinity&pre_asdf=!%40%23%3F%24");
+            });
+
+            it("creates an ampersand", function () {
+
+                expect(bbui.arrayToQueryString(items, null, true)).toBe("&databaseName=BBInfinity&asdf=!%40%23%3F%24");
+            });
+
+        });
+
+        describe("getAbsoluteBaseUrl", function () {
+
+            /*beforeEach(function () {
+                $window.location = {
+                    href: "http://localhost/bbappfx/sky/custom/myapp/constituent/86c309a3-c84d-4b49-a5d9-c0483b3c5ed5?databaseName=BBInfinity"
+                };
+            });*/
+
+            it("works with no parameters", function () {
+                expect(bbui.getAbsoluteBaseUrl()).not.toBeDefined();
+                expect(bbui.getAbsoluteBaseUrl(null)).toBe(null);
+                expect(bbui.getAbsoluteBaseUrl("")).toBe("");
+            });
+
+            // TODO create helper function to get window.location.href and mock it for test.
+            // Currently, window.location.href returns something like http://localhost:9876/context.html
+            xit("returns expected values", function () {
+                expect(bbui.getAbsoluteBaseUrl("bbappfx/sky/custom/myapp/constituent/86c309a3-c84d-4b49-a5d9-c0483b3c5ed5")).toBe("TODO");
+            });
+
+        });
+
     });
 });
