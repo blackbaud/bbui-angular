@@ -108,10 +108,10 @@
                  * @param {String} propName
                  * The name of the property.
                  *
-                 * @param {Boolean} ignoreCase
-                 * Indicates whether to ignore case on the property value.
+                 * @param {Boolean} [ignoreCase]
+                 * Indicates whether to ignore case on the property.
                  *
-                 * @param {Object} defaultValue
+                 * @param {Object} [defaultValue]
                  * The default value to return if the property does not exist.
                  *
                  * @return {Object}
@@ -170,6 +170,10 @@
                 },
 
                 /**
+                 * Copy properties from one object onto another.
+                 *
+                 * @param {Object} to
+                 * @param {Object} from
                  */
                 copyProps: function (to, from) {
                     var p;
