@@ -62,7 +62,8 @@ module.exports = function (grunt) {
                     welcome: "documentation/welcome.html",
                     images: "documentation/images",
                     "head-html": "<link rel=\"stylesheet\" href=\"../style/style.css\" type=\"text/css\" />",
-                    footer: "Copyright Blackbaud 2016"
+                    footer: "Copyright Blackbaud 2016",
+                    guides: "documentation/guides/guides.json"
                 }
             }
         },

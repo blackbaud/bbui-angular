@@ -1,0 +1,13 @@
+[
+    {
+        "title": "bbui-angular guides",
+        "items": [
+            {
+                "name": "getting_started",
+                "url": "getting_started",
+                "title": "Getting Started With bbui-angular",
+                "description": "This introduction to bbui-angular explains how you can get started."
+            }
+        ]
+    }
+]
