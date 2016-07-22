@@ -4,4 +4,4 @@ node_modules
 tmp
 .sass-cache
 *.log
-\docs
+/documentation/docs

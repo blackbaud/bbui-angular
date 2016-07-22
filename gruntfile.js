@@ -56,9 +56,13 @@ module.exports = function (grunt) {
                 src: [
                     "src"
                 ],
-                dest: "docs",
+                dest: "documentation/docs",
                 options: {
-
+                    title: "Blackbaud : bbui-angular",
+                    welcome: "documentation/welcome.html",
+                    images: "documentation/images",
+                    "head-html": "<link rel=\"stylesheet\" href=\"../style/style.css\" type=\"text/css\" />",
+                    footer: "Copyright Blackbaud 2016"
                 }
             }
         },
