@@ -255,7 +255,7 @@
                         part = parts[i];
                         if (!(i === 0 && part === "window")) {
                             obj = obj[part];
-                            if (typeof obj === "undefined" && i < n - 1) {
+                            if (typeof obj === "undefined") {
                                 return null;
                             }
                         }
