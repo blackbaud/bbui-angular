@@ -1,7 +1,9 @@
-/*#header-content {
-    background: url("../style/Blackbaud.Tag.HighRes.Color.jpg") 0 0 no-repeat;
-    height: 100px;
-}*/
+
+#header-content {
+    background: url("../style/generic.ApplicationIcon.ico") 0 0 no-repeat;
+    background-size: 23px;
+    padding-left: 35px;
+}
 
 #north-region {
     background-color: #71bf43;
