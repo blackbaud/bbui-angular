@@ -6,7 +6,9 @@ This walkthrough guides you through the process to create a basic application wi
 
 ## Create a page
 
-Let's start with a basic HTML page that includes SKY UX. Because we will be making http requests to Blackbaud CRM, it's easiest if you set up your page inside of your CRM virtual directory. Let's make it at [http://localhost/bbappfx/sky/custom](http://localhost/bbappfx/sky/custom). This way, you can avoid CORS and web.config issues while doing development.
+Let's start with a basic HTML page that includes SKY UX. Because we will be making http requests to Blackbaud CRM, it's easiest if you set up your page inside of your CRM virtual directory. Let's make it at [http://localhost/bbappfx/sky/custom/myapp](http://localhost/bbappfx/sky/custom/myapp). This way, you can avoid CORS and web.config issues while doing development.
+
+Your environment may have a different virtual directory name than `bbappfx`. That's fine, just replace anywhere you see `bbappfx` with the name of your virtual directory. Replace `localhost` with the name of the machine you are accessing, if CRM is not deployed locally.
 
 First, create a folder and then add an HTML file called `index.html`. To ensure that the page renders properly in all modern browsers, start with the following boilerplate HTML:
 
@@ -24,7 +26,7 @@ First, create a folder and then add an HTML file called `index.html`. To ensure 
 Next, to add SKY UX to the page, point to SKY UX via the Blackbaud SKY CDN.
 
 <div class="bb-note">
-If you wish to host SKY UX yourself, you may install it via [Bower](http://bower.io/) or [NPM](https://www.npmjs.com/package/blackbaud-skyux) instead of pointing to the CDN. See the [SKY UX GitHub page](https://github.com/blackbaud/skyux/) for instructions on installing via Bower.
+If you wish to host SKY UX yourself, you may install it via <a href="http://bower.io/">Bower</a> or <a href="https://www.npmjs.com/package/blackbaud-skyux">NPM</a> instead of pointing to the CDN. See the <a href="https://github.com/blackbaud/skyux/">SKY UX GitHub page</a> for instructions on installing via Bower.
 </div>
 
 <pre><code>&lt;!DOCTYPE html>

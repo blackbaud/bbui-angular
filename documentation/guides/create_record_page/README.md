@@ -1,6 +1,6 @@
 # Create a record page
 
-<p>Now that you've learned how to get a <a href="../start-a-project">SKY UX app up and running</a>, let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.</p>
+<p>Now that you've learned how to get a <a href="../start-a-project">SKY UX app up and running</a>, and you can <a href="../authentication">authenticate with CRM</a>, let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.</p>
 
 <p>Record pages usually display information about specific records in two distinct sections: a summary section and a tiles section.</p>
 
@@ -73,7 +73,7 @@ The content in the `{{brackets}}` is pulled from your Angular service.
 
 ### From Blackbaud CRM
 
-Change your Angular service from returning hard-coded constituent information to pulling the information from Blackbaud CRM. In this case, we are pulling data from two different data forms. Some of the info is still hard-coded, but you get the idea.
+Change your Angular service to pull the constituent information from Blackbaud CRM. In this case, we are pulling data from two different data forms. Some of the information in this example is still hard-coded, but you get the idea. When making a real app, you won't be hard-coding the constituent ID either, you'll more likely be linking to a constituent page from a list or search.
 
 <pre><code>
     angular.module('skytutorial')
@@ -129,7 +129,7 @@ Because the requests to CRM can take some time, it's a good idea to add a spinne
 
 Now you have a SKY UX application that can talk to your Blackbaud CRM installation! Because we are using the webshell service to talk to CRM, security is included. You shouldn't need to do any additional work to get the security for your application to work just like it does in CRM. You will be using CRM feature specs behind the scenes, so any user that does not have rights to a certain feature will not be able to successfully complete the call.
 
-This does mean that you need to check for feature permissions in some cases. For example, if a user does not have rights an edit form, you should hide or disable the button conditionally.
+This does mean that you need to check for feature permissions in some cases. For example, if a user does not have rights an edit form, you should hide or disable the button conditionally. The Infinity webshell handles this kind of permissions for you and only displays features that the current user has permission to use.
 
 <hr>
 

@@ -7,7 +7,7 @@ Your app needs to know how to access CRM. Add a `config` to your service that se
 <pre><code>
     function config(bbuiShellServiceConfig) {
         bbuiShellServiceConfig.baseUrl = "/bbappfx";
-        bbuiShellServiceConfig.databaseName = "BBInfinity";
+        bbuiShellServiceConfig.databaseName = "BBInfinity"; // web.config key, not actual db name
     }
 
     config.$inject = ['bbuiShellServiceConfig'];

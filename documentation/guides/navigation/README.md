@@ -33,9 +33,9 @@ Write an `IHttpHandler` to handle incoming requests and rewrite the URL:
 <pre><code>
 Imports System.Web
 
-''' <summary>
+''' &lt;summary>
 ''' This handler routes HTML5 URLs to the home page.
-''' </summary>
+''' &lt;/summary>
 Public NotInheritable Class Html5PageHandler
     Implements IHttpHandler
 
@@ -108,18 +108,6 @@ In your web.config, enable the handler:
 			&lt;/authentication>
 		&lt;/security>
 	&lt;/system.webServer>
-	&lt;runtime>
-		&lt;assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1" appliesTo="v2.0.50727">
-			&lt;dependentAssembly>
-				&lt;assemblyIdentity name="System.Web.Extensions" publicKeyToken="31bf3856ad364e35"/>
-				&lt;bindingRedirect oldVersion="1.0.0.0-1.1.0.0" newVersion="3.5.0.0"/>
-			&lt;/dependentAssembly>
-			&lt;dependentAssembly>
-				&lt;assemblyIdentity name="System.Web.Extensions.Design" publicKeyToken="31bf3856ad364e35"/>
-				&lt;bindingRedirect oldVersion="1.0.0.0-1.1.0.0" newVersion="3.5.0.0"/>
-			&lt;/dependentAssembly>
-		&lt;/assemblyBinding>
-	&lt;/runtime>
 &lt;/configuration>
 </code></pre>
 
