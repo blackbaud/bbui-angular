@@ -10,8 +10,7 @@
 
 <p>The summary section resides at the top of the page to provide a general overview of a record. For example, it can display information such as a record name, description, and profile picture. To add a summary section to your page, use the <a href="http://skyux.developer.blackbaud.com/components/pagesummary">page summary directive</a>. </p>
 
-<pre><code class="language-markup">
-&lt;bb-page-summary>
+<pre><code class="language-markup">&lt;bb-page-summary>
   &lt;bb-page-summary-image>
     &lt;bb-avatar
       bb-avatar-src="'http://skyux.developer.blackbaud.com/assets/img/hernandez.jpg'">
