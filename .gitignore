@@ -6,3 +6,4 @@ tmp
 *.log
 /documentation/docs
 /coverage
+.DS_Store
