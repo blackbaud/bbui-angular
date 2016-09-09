@@ -3,3 +3,7 @@ build
 node_modules
 tmp
 .sass-cache
+*.log
+/documentation/docs
+/coverage
+.DS_Store
