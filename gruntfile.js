@@ -41,6 +41,18 @@ module.exports = function (grunt) {
                 }
             }
         },
+        uglify: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                options: {
+                    sourceMapIn: 'dist/js/bbui.js.map'
+                },
+                src: ['dist/js/bbui.js'],
+                dest: 'dist/js/bbui.min.js'
+            }
+        },
         watch: {
             sass: {
                 files: ['src/scss/*.scss'],
@@ -100,12 +112,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-jsduck');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('default', ['concat_sourcemap']);
+    grunt.registerTask('default', ['concat_sourcemap', 'uglify']);
     grunt.registerTask('build', ['default']);
     grunt.registerTask('docs', ['jsduck']);
     grunt.registerTask('lint', ['jshint', 'jscs']);
