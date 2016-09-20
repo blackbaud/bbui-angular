@@ -1859,6 +1859,55 @@
                     /**
                      * Saves a data form on the server and passes the {@link BBUI.webshell.servicecontracts.DataFormSaveReply reply object} to the promise.
                      *
+                     * <pre><code>
+var svc = bbuiShellService.create(),
+    constituentsValueCollection;
+
+if (constituents && constituents.length) {
+    constituentsValueCollection = [];
+    constituents.forEach(function (constituent) {
+        constituentsValueCollection.push([
+            {
+                name: "CONSTITUENTID",
+                value: constituent.id
+            },
+            {
+                name: "DISPLAYNAME",
+                value: constituent.displayName
+            }
+        ]);
+    });
+}
+
+svc.dataFormSave(
+    MYFORM_ADD_ID,
+    {
+        contextRecordId: myContextRecordId,
+        values: [
+            {
+                name: "FIELD1",
+                value: field1Value
+            },
+            {
+                name: "FIELD2",
+                value: field2Value
+            },
+            {
+                name: "CONSTITUENTS",
+                collectionValue: constituentsValueCollection
+            }
+        ]
+    }
+).then(function (reply) {
+    console.log("Record was created: " + reply.data.id);
+}, function (reply) {
+    console.err("Data form save error: " + reply.data.message);
+})
+.finally(function () {
+});
+                     * </code></pre>
+                     *
+                     *
                      * @param {String} dataFormInstanceId The ID of the data form instance to load.
                      *
                      * @param {Object} [options]
@@ -1868,6 +1917,13 @@
                      *
                      * @param {String} [options.contextRecordId]
                      * The ID of the record that provides context for the data form.
+                     *
+                     * @param {BBUI.uimodeling.restservices.contracts.FieldValue[]} [options.values]
+                     * Any form field default values for the form.
+                     *
+                     * @param {String} [options.securityContextFeatureId]
+                     *
+                     * @param {String} [options.securityContextFeatureType]
                      *
                      * @return {promise}
                      */
