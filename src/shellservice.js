@@ -872,6 +872,12 @@
                      * An array of objects containing <tt>name</tt> and <tt>value</tt> properties used to filter the simple data list results.
                      * @param {String} options.parameters.name
                      * @param {Object} options.parameters.value
+                     * 
+                     * @param {String} [options.securityContextFeatureId]
+                     * The feature ID that provides implied security for the given simple data list.
+                     *
+                     * @param {String} [options.securityContextFeatureType]
+                     * The feature type of the feature providing implied security for the given data list.
                      *
                      * @return {promise}
                      */
@@ -883,6 +889,7 @@
 
                         if (options) {
                             url += BBUI.arrayToQueryString(options.parameters, paramPrefix, true);
+                            url = addSecurityContext(url, options);
                         }
 
                         return doGet(this, url);
