@@ -1,6 +1,6 @@
 # Create a record page
 
-Now that you've learned how to get a <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/2_start_project/README.md">SKY UX</a> app up and running and you can <a href-"https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md">authenticate with <strong>Blackbaud CRM</strong></a>, let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.
+Now that you've learned how to get a <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/2_start_project/README.md">SKY UX app up and running</a> and you can <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md">authenticate with <strong>Blackbaud CRM</strong></a>, let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.
 
 Record pages usually display information about specific records in two distinct sections: a summary section and a tiles section.
 
