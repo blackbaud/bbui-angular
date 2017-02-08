@@ -17,7 +17,7 @@ To download the bbui-angular source code with [Bower](http://bower.io/), run `bo
 
 ## Next steps
 
-* [Start a project »](#!/guides/start_project)
-* [Authentication »](#!/guides/authentication)
-* [Create a record page »](#!/guides/create_record_page)
-* [Navigation »](#!/guides/navigation)
+* <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/2_start_project/README.md">Start a project »</a></p>
+* <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md">Authentication »</a></p>
+* <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/4_create_record_page/README.md">Create a record page »</a></p>
+* <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/5_navigation/README.md">Navigation »</a></p>

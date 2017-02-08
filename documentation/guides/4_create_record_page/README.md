@@ -133,6 +133,4 @@ This means you need to check for feature permissions in some cases. For example,
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="#!/guides/navigation">Navigation »</a></p>
-
-**Next step:** [Navigation »](#!/guides/navigation)
+<p><strong>Next step:</strong> <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/5_navigation/README.md">Navigation »</a></p>
