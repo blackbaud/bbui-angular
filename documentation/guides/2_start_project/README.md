@@ -209,6 +209,8 @@ And there you have it! A page that uses both the CSS and Angular components of S
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="#!/guide/authentication">Authentication »</a></p>
+<p><strong>Next step:</strong> <a href="#!/guides/authentication">Authentication »</a></p>
 
-**Next step:** [Authentication »](#!/guides/authentication)
+**Next step:** [Authentication »](#!documentation/guides/authentication)
+
+**Next step:** [Authentication »](#!/authentication)

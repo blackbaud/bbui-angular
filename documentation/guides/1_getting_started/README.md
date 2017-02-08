@@ -8,7 +8,7 @@ When you build Angular applications, we strongly recommend that you use [SKY UX]
 
 The Infinity web shell provides a rich UI and a platform that allows for extensive customization with very few limits. However, web shell is built on top of ExtJS, which is not a responsive framework. Because of this, it can be difficult to modify the existing web UI. In addition, some users may not need the full Infinity experience. For example, if users only need a small piece of functionality, you may not want to expose the entire web shell and all its features.
 
-With Angular, you can create single-page applications with a modern look adn feel that is responsive on all devices.
+With Angular, you can create single-page applications with a modern look and feel that is responsive on all devices.
 
 ## Installation
 
