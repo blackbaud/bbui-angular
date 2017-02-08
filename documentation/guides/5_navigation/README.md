@@ -1,6 +1,6 @@
 # Navigation
 
-One of the nice things about using Angular is the pretty URLs. Let's turn on HTML5 mode to enable this.
+One of the nice things about Angular is the pretty URLs. Let's turn on HTML5 mode to enable this feature.
 
 <pre><code>
     function config($locationProvider) {
@@ -18,15 +18,15 @@ One of the nice things about using Angular is the pretty URLs. Let's turn on HTM
     .config(config);
 </code></pre>
 
-In your index.html, you need to set the `base` tag:
+In your index.html, we need to set the `base` tag:
 
 `<base href='/bbappfx/sky/custom/myapp/'>`
 
-## URL Rewriting
+## URL rewriting
 
-We want to be able to rewrite URLs so that `http://localhost/bbappfx/sky/custom/myapp/` or `http://localhost/bbappfx/sky/custom/myapp/constituent/12345` both redirect to `index.html` - that is what makes this a single-page application. There are a couple of ways to do this, but we recommend the approach outlined in this guide. It should work for all set ups, whether hosted or on premise.
+We want to be able to rewrite URLs so that `http://localhost/bbappfx/sky/custom/myapp/` and `http://localhost/bbappfx/sky/custom/myapp/constituent/12345` both redirect to `index.html`. That is what makes this a single-page application. We can do this in a couple ways, but we recommend the approach outlined in this tutorial. It should work for all set ups, regardless of whether you are hosted or on-premise.
 
-Create a new .NET class in some assembly - either make a new assembly or use an existing one if you have one where this class makes sense.
+Create a .NET class in some assembly. You can create an assembly or use an existing one if you have one where the new class makes sense.
 
 Write an `IHttpHandler` to handle incoming requests and rewrite the URL:
 
@@ -111,7 +111,7 @@ In your web.config, enable the handler:
 &lt;/configuration>
 </code></pre>
 
-If you have any files that should not be written back to index.html, such as our bower_components folder, js folder, images, and css, place them into folders in the same directory and add a web.config which disables this handler.
+For any files that should not be written back to index.html, such as our bower_components folder, js folder, images, and css, place them into folders in the same directory and add a web.config to disable the handler.
 
 <pre><code>
 &lt;configuration>
