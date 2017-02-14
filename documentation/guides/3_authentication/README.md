@@ -121,6 +121,8 @@ Next, you need to call your authentication method. Create a controller for your 
 
 `<html charset="utf-8" ng-app="skytutorial" ng-controller="MainController as mainCtrl">`
 
+The following code defines the new controller:
+
 <pre><code>
     angular.module('skytutorial')
     .controller('MainController', ['bbAuth', 'bbWait', '$scope', function (bbAuth, bbWait, $scope) {

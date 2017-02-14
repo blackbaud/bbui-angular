@@ -6,7 +6,7 @@ This tutorial builds on the SKY UX [Getting Started guide](http://skyux.develope
 
 Let's start with a basic HTML page that includes SKY UX. To simplify HTTP requests to ***Blackbaud CRM***, let's set up the page inside the ***Blackbaud CRM*** virtual directory at [http://localhost/bbappfx/sky/custom/myapp](http://localhost/bbappfx/sky/custom/myapp). This avoids CORS and web.config issues during development.
 
-If your environment has a different virtual directory name, just replace any instance of `bbappfx` with your virtual directory name. And if ***Blackbaud CRM*** is not deployed locally, replace `localhost` with the name of the machine to access.
+If your environment has a different virtual directory name, just replace `bbappfx` with your virtual directory name. And if ***Blackbaud CRM*** is not deployed locally, replace `localhost` with the name of the machine to access.
 
 First, create a folder and add an HTML file called `index.html`. To ensure that the page renders correctly in all modern browsers, start with the following boilerplate HTML:
 
@@ -54,7 +54,7 @@ Next, add bbui-angular to the page.
 
 ## Web.config
 
-You need to create a web.config to turn on anonymous authentication for this page. If you don't allow anonymous authentication, users are prompted to log in before they get to your page and, with some authentication set ups, have to log in a second time.
+You need to create a web.config to turn on anonymous authentication for this page. If you don't allow anonymous authentication, users are prompted to log in before they get to your page and have to log in a second time.
 
 <pre><code>
 &lt;configuration>
