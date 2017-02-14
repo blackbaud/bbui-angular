@@ -209,4 +209,6 @@ And there you have it! A page that uses both the CSS and Angular components of S
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md">Authentication »</a></p>
+## Next step
+
+[Authentication »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md)

@@ -154,4 +154,6 @@ Save your files and reload the page. If you are not already authenticated with *
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/4_create_record_page/README.md">Create a record page »</a></p>
+## Next step
+
+[Create a record page »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/4_create_record_page/README.md)

@@ -15,6 +15,8 @@ With Angular, you can create single-page applications with a modern look and fee
 To download the bbui-angular source code with [Bower](http://bower.io/), run `bower install bbui-angular` in the command prompt.
 <!--`bower install git+https://github.com/blackbaud/bbui-angular#~1.0.4`-->
 
+<hr>
+
 ## Next steps
 
 * [Start a project »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/2_start_project/README.md)
