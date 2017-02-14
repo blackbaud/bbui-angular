@@ -211,4 +211,4 @@ And there you have it! A page that uses both the CSS and Angular components of S
 
 ## Next step
 
-[Authentication »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md)
+[Authentication »](https://github.com/blackbaud/bbui-angular/blob/master/documentation/guides/3_authentication/README.md)
