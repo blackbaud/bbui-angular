@@ -2,7 +2,7 @@
 
 ## Configuration
 
-Your app needs to know how to access CRM. Add a `config` to your service that sets the required values on the bbui-angular service:
+Your app must be able to access ***Blackbaud CRM***. Add a `config` to your service that sets the required values on the bbui-angular service:
 
 <pre><code>
     function config(bbuiShellServiceConfig) {
@@ -117,9 +117,11 @@ Here is an example of a factory to help with this workflow:
     }]);
 </code></pre>
 
-Next, you need to call your authentication method. Create a controller for your app that will call the method you just created.
+Next, you need to call your authentication method. Create a controller for your app to call the method you just created.
 
 `<html charset="utf-8" ng-app="skytutorial" ng-controller="MainController as mainCtrl">`
+
+The following code defines the new controller:
 
 <pre><code>
     angular.module('skytutorial')
@@ -142,14 +144,16 @@ Next, you need to call your authentication method. Create a controller for your 
     }]);
 </code></pre>
 
-If the user has not yet authenticated, we don't want to display the page. Create a `div` that wraps up the contents of the page:
+If the user has not authenticated, we don't want to display the page. Create a `div` to wrap the contents of the page: 
 
 `<div ng-if="sessionInfo">`
 
-Notice that inside of the controller, we are setting `sessionInfo` when the authenticate call succeeds. Angular will not render this section until `sessionInfo` has a value.
+Notice that inside the controller, we set `sessionInfo` when the authentication call succeeds. Angular will not render this section until `sessionInfo` has a value.
 
-Save your files and reload the page. If you are not already authenticated with Blackbaud CRM, you should be redirected to the login page that you see normally. Upon log in, you will be redirected back to your SKY UX app.
+Save your files and reload the page. If you are not already authenticated with ***Blackbaud CRM***, you will be redirected to the login page. After you log in, you will be redirected back to your SKY UX app.
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="#!/guide/create_record_page">Create a record page »</a></p>
+## Next step
+
+[Create a record page »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/4_create_record_page/README.md)

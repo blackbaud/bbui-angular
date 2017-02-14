@@ -1,14 +1,14 @@
 # Create a record page
 
-<p>Now that you've learned how to get a <a href="../start-a-project">SKY UX app up and running</a>, and you can <a href="../authentication">authenticate with CRM</a>, let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.</p>
+Now that you've learned how to get a [SKY UX app up and running](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/2_start_project/README.md) and you can [authenticate with ***Blackbaud CRM***](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/3_authentication/README.md), let's build a page with some content. SKY UX applications feature two common page types: record pages and tabbed pages.
 
-<p>Record pages usually display information about specific records in two distinct sections: a summary section and a tiles section.</p>
+Record pages usually display information about specific records in two distinct sections: a summary section and a tiles section.
 
 ## Summary section
 
-### Static
+### Static values
 
-<p>The summary section resides at the top of the page to provide a general overview of a record. For example, it can display information such as a record name, description, and profile picture. To add a summary section to your page, use the <a href="http://skyux.developer.blackbaud.com/components/pagesummary">page summary directive</a>. </p>
+The summary section resides at the top of the page to provide a general overview of a record. For example, it can display information such as a record name, description, and profile picture. To add a summary section to your page, use the [page summary directive](http://skyux.developer.blackbaud.com/components/pagesummary).
 
 <pre><code class="language-markup">&lt;bb-page-summary>
   &lt;bb-page-summary-image>
@@ -28,11 +28,11 @@
 &lt;/bb-page-summary>
 </code></pre>
 
-### Dynamic
+### Dynamic values
 
-These hard-coded values for Robert Hernandez aren't going to be very useful. You want to be able to pull these values from your service dynamically.
+Hard-coded values for Robert Hernandez aren't going to be very useful. We want to pull values from a service dynamically.
 
-Add a controller with the information about Robert to your Angular module:
+Add a controller with Robert Hernandez's information to your Angular module:
 
 <pre><code>  angular.module('skytutorial')
   .controller('ConstituentController', [function () {
@@ -48,7 +48,7 @@ Add a controller with the information about Robert to your Angular module:
 
   }]);</code></pre>
 
-Set the controller on a `div` tag and pull the page values from the controller:
+Set the controller on a `div` tag, and pull the page values from the controller:
 
 <pre><code>  &lt;div ng-controller="ConstituentController as constitCtrl">
     &lt;bb-page-summary>
@@ -69,11 +69,11 @@ Set the controller on a `div` tag and pull the page values from the controller:
     &lt;/bb-page-summary>
   &lt;div></code></pre>
 
-The content in the `{{brackets}}` is pulled from your Angular service.
+The content in the `{{` and `}}` brackets is pulled from your Angular service.
 
-### From Blackbaud CRM
+### Values from ***Blackbaud CRM***
 
-Change your Angular service to pull the constituent information from Blackbaud CRM. In this case, we are pulling data from two different data forms. Some of the information in this example is still hard-coded, but you get the idea. When making a real app, you won't be hard-coding the constituent ID either, you'll more likely be linking to a constituent page from a list or search.
+You can change your Angular service to pull the constituent information from ***Blackbaud CRM***. In this case, we want to pull data from two different forms. Some data in this example is still hard-coded, but it provides the general idea. For a real app, you won't hard-code the constituent ID either; you're more likely to link to a constituent page from a list or search.
 
 <pre><code>
     angular.module('skytutorial')
@@ -123,14 +123,16 @@ Change your Angular service to pull the constituent information from Blackbaud C
     }]);
 </code></pre>
 
-Because the requests to CRM can take some time, it's a good idea to add a spinner so that the user knows that something is happening. Use the SKY UX [wait component](http://skyux.developer.blackbaud.com/components/wait/) to easily show that something is happening. In the controller above, we set the `loading` value to true when we started the request, and to false when the request was finished.
+Because requests to ***Blackbaud CRM*** can take some time, it's a good idea to use the SKY UX [wait component](http://skyux.developer.blackbaud.com/components/wait/) to display a spinner to let users know something is happening. In the controller above, we set the `loading` value to `true` when the request starts and to `false` when the request finishes.
 
 `<div ng-controller="ConstituentController as constitCtrl" bb-wait="loading">`
 
-Now you have a SKY UX application that can talk to your Blackbaud CRM installation! Because we are using the webshell service to talk to CRM, security is included. You shouldn't need to do any additional work to get the security for your application to work just like it does in CRM. You will be using CRM feature specs behind the scenes, so any user that does not have rights to a certain feature will not be able to successfully complete the call.
+Now you have a SKY UX application that can talk to your ***Blackbaud CRM*** installation! Since we use the web shell service to talk to ***Blackbaud CRM***, security is included. You shouldn't need any additional work to get the security for your application to work just like in ***Blackbaud CRM***. You will use feature specs behind the scenes, so any users who do not have rights to a feature cannot complete calls to that feature.
 
-This does mean that you need to check for feature permissions in some cases. For example, if a user does not have rights an edit form, you should hide or disable the button conditionally. The Infinity webshell handles this kind of permissions for you and only displays features that the current user has permission to use.
+This means you need to check for feature permissions in some cases. For example, if users do not have rights to an edit form, you should hide or disable the button conditionally. The Infinity web shell handles this kind of permissions for you and only displays features when users have permissions.
 
 <hr>
 
-<p><strong>Next step:</strong> <a href="#!/guide/navigation">Navigation »</a></p>
+## Next step
+
+[Navigation »](https://github.com/blackbaud/bbui-angular/blob/docs-tutorials-edits/documentation/guides/5_navigation/README.md)
