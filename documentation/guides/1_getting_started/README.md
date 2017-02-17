@@ -1,6 +1,6 @@
 # Get started with bbui-angular
 
-The bbui-angular library wraps up calls to the Infinity web shell and UI Modeling services into Angular services. It is fully compatible with Infinity web shell versions 3.0 and up.
+The bbui-angular library wraps up calls to the Infinity web shell and UI Modeling services into Angular services.
 
 When you build Angular applications, we strongly recommend that you use [SKY UX](http://skyux.developer.blackbaud.com/) as a front-end framework. SKY UX is built on top of [AngularJS](https://angularjs.org/) and [Bootstrap](http://getbootstrap.com/). All examples on this site use SKY UX.
 
