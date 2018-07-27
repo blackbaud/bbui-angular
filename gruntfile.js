@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= buildPath %>/js/bbui.js': [
-                        'src/*.js'
+                        'src/**/*.js'
                     ]
                 }
             }
