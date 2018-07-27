@@ -5266,20 +5266,24 @@ svc.dataFormSave(
             getWebShellLoginUrl: getWebShellLoginUrl,
             convertHourMinute: convertHourMinute,
             toUpperIdOrNullIfEmpty: toUpperIdOrNullIfEmpty,
-            cloneOrNew: cloneOrNew
+            cloneOrNew: cloneOrNew,
+            configuration: {
+                isCustomApp: isCustomApp
+            }
         };
 
     }])
 
-    .factory("infinityAuth", ["infinityUtilities", "browserUtilities", "bbuiShellService", "$q",
-    function (infinityUtilities, browserUtilities, bbuiShellService, $q) {
+    .factory("infinityAuth", ["infinityUtilities", "browserUtilities", "bbuiShellService", "$q", "$location",
+    function (infinityUtilities, browserUtilities, bbuiShellService, $q, $location) {
 
         var svc,
             authenticateSuccessCallback,
             authenticateFailureCallback,
             authenticateFinallyCallback,
             FORMS_AUTH_HEADER = "X-BB-FormsAuth",
-            noop = angular.noop;
+            noop = angular.noop,
+            euc = encodeURIComponent;
 
         function sessionStartSuccess(reply) {
             authenticateSuccessCallback(reply.data);
@@ -5422,10 +5426,27 @@ svc.dataFormSave(
             ];
         }
 
+        function afterLogout(logoutWasSuccessful) {
+            var url;
+            
+            if (logoutWasSuccessful) {
+                
+                url = (infinityUtilities.configuration.isCustomApp ? '../' : '') + "../../webui/WebShellLogin.aspx?databaseName=" + euc(infinityUtilities.getDatabaseName());
+                url += "&url=" + euc($location.absUrl()) + "&status=inactive";
+
+                // $location.replace() doesn't seem to work here so using window.location.replace directly
+                // Using replace keeps the login screen from showing up in the browser history.
+                window.location.replace(url);
+            } else {
+                console.log("The user was not logged out.  This is likely because custom authentication was not used, or the user was logged out by another tab.");
+            } 
+        }
+
         return {
             authenticateAsync: authenticateAsync,
             logoutAsync: logoutAsync,
-            getAuthInterceptors: getAuthInterceptors
+            getAuthInterceptors: getAuthInterceptors,
+            afterLogout: afterLogout
         };
 
     }])
