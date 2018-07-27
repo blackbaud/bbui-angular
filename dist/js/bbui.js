@@ -5079,7 +5079,7 @@ svc.dataFormSave(
 (function () {
     'use strict';
 
-    angular.module("infinity.util")
+    angular.module("infinity.util", [])
     .factory("browserUtilities", ["mockableUtilities", function (mockableUtilities) {
 
         /**
@@ -5508,15 +5508,6 @@ svc.dataFormSave(
     });
 
 }());
-/*global angular */
-
-(function () {
-    'use strict';
-
-    angular.module("infinity.util", []);
-
-}());
-
 /*global angular */
 
 (function () {

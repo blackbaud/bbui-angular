@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module("infinity.util")
+    angular.module("infinity.util", [])
     .factory("browserUtilities", ["mockableUtilities", function (mockableUtilities) {
 
         /**
