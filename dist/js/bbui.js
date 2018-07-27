@@ -5513,6 +5513,15 @@ svc.dataFormSave(
 (function () {
     'use strict';
 
+    angular.module("infinity.util", []);
+
+}());
+
+/*global angular */
+
+(function () {
+    'use strict';
+
     function slugFactory() {
 
         function prependSlug(text, id) {
