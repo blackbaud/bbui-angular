@@ -6,11 +6,14 @@
     function slugFactory() {
 
         function prependSlug(text, id) {
+
+            var slug;
+
             if (!angular.isString(text) || text.length === 0) {
                 return id;
             }
 
-            var slug = text.toLowerCase();
+            slug = text.toLowerCase();
 
             if (String.prototype.trim) {
                 slug = slug.trim();

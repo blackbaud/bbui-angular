@@ -29,12 +29,12 @@
          */
         function getVirtualDirectory() {
 
+            var parser,
+                path;
+
             if (!initialized) {
                 console.error('getVirtualDirectory called before initialized');
             }
-
-            var parser,
-                path;
 
             parser = document.createElement('a');
             parser.href = mockableUtilities.getWindowLocation().href;
@@ -62,12 +62,14 @@
          */
         function getWebShellLoginUrl(databaseName, status) {
 
+            var url,
+                redirectUrl;
+
             if (!initialized) {
                 console.error('getWebShellLoginUrl called before initialized');
             }
 
-            var url,
-                redirectUrl = mockableUtilities.getWindowLocation().href;
+            redirectUrl = mockableUtilities.getWindowLocation().href;
 
             url = "/" + getVirtualDirectory() + "/webui/WebShellLogin.aspx?databaseName=" + euc(databaseName);
 
@@ -217,11 +219,11 @@
 
         function authenticateAsync(successCallback, failureCallback, finallyCallback) {
 
+            var httpHeaders = {};
+
             authenticateSuccessCallback = successCallback || noop;
             authenticateFailureCallback = failureCallback || noop;
             authenticateFinallyCallback = finallyCallback || noop;
-
-            var httpHeaders = {};
 
             // Add a custom HTTP header to all requests so the server will send back a 401 response without a challenge
             // header when the user logs in unsuccessfully.  This will keep the user from being prompted for credentials
@@ -266,9 +268,35 @@
                 });
         }
 
+        /**
+         * Get any `$httpProvider` interceptors necessary for authentication.
+         */
+        function getAuthInterceptors() {
+            return [
+                function () {
+                    return {
+                        "responseError": function (response) {
+                            var redirectUrl,
+                                status = response.status,
+                                FORMS_AUTH_HEADER = "X-BB-FormsAuth";
+                
+                            if (status === 401 || status === 404) {
+                                redirectUrl = infinityUtilities.getWebShellLoginUrl(browserUtilities.getQueryStringParameters().databasename,
+                                                                  response.headers(FORMS_AUTH_HEADER));
+                                browserUtilities.redirect(redirectUrl);
+                            }
+                
+                            return $q.reject(response);
+                        }
+                    };
+                }
+            ];
+        }
+
         return {
             authenticateAsync: authenticateAsync,
-            logoutAsync: logoutAsync
+            logoutAsync: logoutAsync,
+            getAuthInterceptors: getAuthInterceptors
         };
 
     }])
