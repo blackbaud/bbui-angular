@@ -13,24 +13,19 @@
          */
         function getQueryStringParameters() {
 
-            var queryString;
+            // Adapted from: https://www.developerdrive.com/2013/08/turning-the-querystring-into-a-json-object-using-javascript/
 
-            queryString = mockableUtilities.getWindowLocation().href.split("?")[1];
-            if (queryString) {
-
-                // Normalize to lower case because query string keys are case insensitive.
-                queryString = queryString.toLowerCase();
-
-                // from http://stackoverflow.com/questions/8648892/convert-url-parameters-to-a-javascript-object
-                queryString = decodeURI(queryString).replace(/"/g, '\\"');
-                queryString = queryString.replace(/&/g, '","');
-                queryString = queryString.replace(/=/g, '":"');
-                queryString = '{"' + queryString + '"}';
-                queryString = JSON.parse(queryString);
-
+            var pairs = mockableUtilities.getWindowLocation().search.slice(1).split('&'),
+                result = {};
+            
+            if (pairs) {
+                pairs.forEach(function(pair) {
+                    pair = pair.split('=');
+                    result[pair[0]] = decodeURIComponent(pair[1] || '');
+                });
             }
-
-            return queryString || {};
+            
+            return JSON.parse(JSON.stringify(result));
         }
 
         /**
