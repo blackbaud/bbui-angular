@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= buildPath %>/js/bbui.js': [
-                        'src/*.js'
+                        'src/**/*.js'
                     ]
                 }
             }
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('default', ['concat_sourcemap', 'uglify']);
+    grunt.registerTask('default', ['lint', 'concat_sourcemap', 'uglify']);
     grunt.registerTask('build', ['default']);
     grunt.registerTask('docs', ['jsduck']);
     grunt.registerTask('lint', ['jshint', 'jscs']);
