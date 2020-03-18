@@ -63,17 +63,21 @@
         function getWebShellLoginUrl(databaseName, status) {
 
             var url,
-                redirectUrl;
+                redirectUrl = mockableUtilities.getWindowLocation().href,
+                index = redirectUrl.indexOf("wsfederationlogin"),
+                actualUrl = redirectUrl.split('&')[0];
 
             if (!initialized) {
                 console.error('getWebShellLoginUrl called before initialized');
             }
 
-            redirectUrl = mockableUtilities.getWindowLocation().href;
-
             url = "/" + getVirtualDirectory() + "/webui/WebShellLogin.aspx?databaseName=" + euc(databaseName);
 
-            url += "&url=" + euc(redirectUrl);
+            if (index !== -1) {
+                url += "&action=wsfederationlogin";
+            }
+
+            url += "&url=" + euc(actualUrl);
 
             if (status) {
                 url += "&status=" + euc(status);
