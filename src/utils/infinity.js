@@ -19,7 +19,7 @@
             isCustomApp = isCustom;
             initialized = true;
             bbuiShellServiceConfig.baseUrl = "/" + getVirtualDirectory();
-            bbuiShellServiceConfig.databaseName = browserUtilities.getQueryStringParameters().databasename;
+            bbuiShellServiceConfig.databaseName = browserUtilities.getQueryStringParameters().databaseName;
         }
 
         /**
@@ -288,7 +288,7 @@
                                 FORMS_AUTH_HEADER = "X-BB-FormsAuth";
                 
                             if (status === 401 || status === 404) {
-                                redirectUrl = infinityUtilities.getWebShellLoginUrl(browserUtilities.getQueryStringParameters().databasename,
+                                redirectUrl = infinityUtilities.getWebShellLoginUrl(browserUtilities.getQueryStringParameters().databaseName,
                                                                   response.headers(FORMS_AUTH_HEADER));
                                 browserUtilities.redirect(redirectUrl);
                             }
