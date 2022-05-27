@@ -1,7 +1,7 @@
 {
   "name": "bbui-angular",
   "description": "A portion of the Infinity BBUI API ported to Angular services.",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/blackbaud/bbui-angular"
